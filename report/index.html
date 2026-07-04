@@ -284,7 +284,7 @@
         font-weight: 700;
       }
 
-      .soff-card {
+      .ag-card {
         display: grid;
         gap: 12px;
         background: #fff;
@@ -370,7 +370,7 @@
           align-items: center;
         }
 
-        .soff-card {
+        .ag-card {
           grid-template-columns: 240px minmax(0, 1fr);
           align-items: start;
         }
@@ -589,7 +589,7 @@
             <p>A shower filter reduces chlorine. That's worthwhile, and it's also all that most of them do — the certification most shower filters carry (NSF/ANSI 177) covers chlorine reduction only. The calcium and magnesium in your water pass straight through the filter and onto you. Even filters with 'hard water' printed on the box will admit in the fine print that they don't remove hardness minerals.</p>
             <p>The only thing that removes hardness minerals is a water softener, which swaps the calcium and magnesium out of the water through a process called ion exchange. It's the technology inside whole-house softening systems, and it's why people who have one say they could never go back. The catch has always been that whole-house systems cost thousands and require plumbing you may not own the right to touch.</p>
             <p class="disclosure">This free report is supported by AG Water Softener. Here's why we think it's relevant to your result.</p>
-            <div class="panel soff-card" id="soff-placeholder">
+            <div class="panel ag-card" id="ag-water-softener">
               <div class="product-placeholder">
                 <img src="../assets/ag-water-softener-product.jpg" alt="AG Water Softener product.">
               </div>
@@ -601,7 +601,7 @@
                   <div>$249, free shipping</div>
                   <div>Better hair and skin in 60 days or your money back</div>
                 </div>
-                <a class="button-link" href="${productUrl(record)}" target="_blank" rel="noopener" data-soff-cta>SEE HOW AG WATER SOFTENER WORKS</a>
+                <a class="button-link" href="${productUrl(record)}" target="_blank" rel="noopener" data-ag-cta>SEE HOW AG WATER SOFTENER WORKS</a>
                 <p class="secondary-link">No rush — your report is downloadable and this page isn't going anywhere.</p>
               </div>
             </div>
@@ -665,7 +665,7 @@
         document.title = `${record.zip} Water Report | MyApartmentWaterQuality.com`;
         track("report_viewed", { zip: record.zip, band: record.band });
         bindRelookup();
-        bindSoffCta(record);
+        bindAgCta(record);
         observeReveal(record);
       }
 
@@ -729,11 +729,11 @@
         });
       }
 
-      function bindSoffCta(record) {
-        const cta = document.querySelector("[data-soff-cta]");
+      function bindAgCta(record) {
+        const cta = document.querySelector("[data-ag-cta]");
         if (!cta) return;
         cta.addEventListener("click", () => {
-          track("soff_cta_click", { zip: record.zip, band: record.band });
+          track("ag_cta_click", { zip: record.zip, band: record.band });
         });
       }
 
