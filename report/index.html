@@ -611,7 +611,6 @@
       }
 
       function productBandParam(band) {
-        if (band === "Moderately hard") return "moderate";
         if (band === "Hard") return "hard";
         if (band === "Very hard") return "veryhard";
         return "";
@@ -620,8 +619,8 @@
       function productUrl(record) {
         const band = productBandParam(record.band);
         return band
-          ? `/products/ag-water-softener/?band=${encodeURIComponent(band)}`
-          : "/products/ag-water-softener/";
+          ? `https://agsoftener.com/?band=${encodeURIComponent(band)}`
+          : "https://agsoftener.com/";
       }
 
       function renderKnown(record) {

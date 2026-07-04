@@ -1,3 +1,4 @@
 .DS_Store
 .vercel/
 data/raw/*.csv
+/ag-water-softener/
