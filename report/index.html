@@ -601,13 +601,27 @@
                   <div>$249, free shipping</div>
                   <div>Better hair and skin in 60 days or your money back</div>
                 </div>
-                <a class="button-link" href="#soff-placeholder" target="_blank" rel="noopener" data-soff-cta>SEE HOW AG WATER SOFTENER WORKS</a>
+                <a class="button-link" href="${productUrl(record)}" target="_blank" rel="noopener" data-soff-cta>SEE HOW AG WATER SOFTENER WORKS</a>
                 <p class="secondary-link">No rush — your report is downloadable and this page isn't going anywhere.</p>
               </div>
             </div>
             <p>Either way, now you know your number. Most people never do.</p>
           </section>
         `;
+      }
+
+      function productBandParam(band) {
+        if (band === "Moderately hard") return "moderate";
+        if (band === "Hard") return "hard";
+        if (band === "Very hard") return "veryhard";
+        return "";
+      }
+
+      function productUrl(record) {
+        const band = productBandParam(record.band);
+        return band
+          ? `/products/ag-water-softener/?band=${encodeURIComponent(band)}`
+          : "/products/ag-water-softener/";
       }
 
       function renderKnown(record) {
