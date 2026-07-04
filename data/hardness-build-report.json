@@ -1,0 +1,23 @@
+{
+  "generated_at": "2026-07-03T22:16:30.266Z",
+  "coverage": "seed",
+  "zip_count": 4,
+  "band_distribution": {
+    "Hard": 1,
+    "Moderately hard": 1,
+    "Very hard": 1,
+    "Soft": 1
+  },
+  "estimated_prefix_count": 1,
+  "missing_or_unsupported_zip_count": 0,
+  "source_files": [
+    {
+      "label": "USGS hardness classification",
+      "url": "https://www.usgs.gov/special-topics/water-science-school/science/hardness-water"
+    }
+  ],
+  "notes": [
+    "Seed output is not national coverage.",
+    "QA-only records are excluded unless --include-qa is passed."
+  ]
+}

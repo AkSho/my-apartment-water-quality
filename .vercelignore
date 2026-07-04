@@ -1,0 +1,5 @@
+assets/*.png
+screenshots/
+.DS_Store
+**/.DS_Store
+data/raw/*.csv

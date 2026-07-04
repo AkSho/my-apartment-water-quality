@@ -1,0 +1,783 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>How Hard Is Your Shower Water? | MyApartmentWaterQuality.com</title>
+    <meta
+      name="description"
+      content="Enter your zip code to see your apartment water hardness score and full shower water report instantly."
+    >
+    <style>
+      :root {
+        --ink: #111;
+        --muted: #4b5563;
+        --paper: #f5f1df;
+        --panel: #fffdf4;
+        --line: #1f2937;
+        --blue: #0645ad;
+        --blue-dark: #002f75;
+        --yellow: #ffe77a;
+        --green: #b8d98f;
+        --orange: #efb36a;
+        --red: #c86f58;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background:
+          linear-gradient(rgba(255, 255, 255, .5) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, .5) 1px, transparent 1px),
+          var(--paper);
+        background-size: 26px 26px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 16px;
+        line-height: 1.45;
+      }
+
+      a {
+        color: var(--blue);
+        text-decoration: underline;
+      }
+
+      a:visited {
+        color: #5b21b6;
+      }
+
+      .page {
+        width: min(100%, 980px);
+        margin: 0 auto;
+        background: var(--panel);
+        border-left: 2px solid var(--line);
+        border-right: 2px solid var(--line);
+        box-shadow: 0 0 0 4px rgba(31, 41, 55, .06);
+      }
+
+      .utility-bar {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 8px 10px;
+        color: #fff;
+        background: #243447;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0;
+      }
+
+      .utility-bar span {
+        min-width: 0;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 14px 10px 18px;
+        border-bottom: 3px double var(--line);
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, .92), rgba(255, 253, 244, .97)),
+          repeating-linear-gradient(90deg, rgba(6, 69, 173, .10) 0 8px, transparent 8px 32px);
+      }
+
+      .eyebrow {
+        margin: 0 0 6px;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        margin-bottom: 8px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(34px, 10vw, 56px);
+        line-height: .98;
+        letter-spacing: 0;
+      }
+
+      h2 {
+        margin-bottom: 10px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(26px, 7vw, 38px);
+        line-height: 1.05;
+        letter-spacing: 0;
+      }
+
+      h3 {
+        margin-bottom: 8px;
+        font-size: 20px;
+        letter-spacing: 0;
+      }
+
+      .lead {
+        margin-bottom: 0;
+        font-size: 17px;
+      }
+
+      .lookup-card {
+        padding: 10px;
+        background: #fff;
+        border: 3px solid var(--line);
+      }
+
+      .lookup-card h2 {
+        margin-bottom: 8px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 18px;
+        text-transform: uppercase;
+      }
+
+      .notice-table {
+        width: 100%;
+        margin-bottom: 10px;
+        border-collapse: collapse;
+        font-size: 12px;
+      }
+
+      .notice-table th,
+      .notice-table td {
+        padding: 5px 6px;
+        border: 1px solid var(--line);
+        text-align: left;
+      }
+
+      .notice-table th {
+        background: #d8e6f8;
+      }
+
+      form {
+        display: grid;
+        gap: 8px;
+      }
+
+      label {
+        display: grid;
+        gap: 3px;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      input {
+        width: 100%;
+        min-height: 45px;
+        padding: 9px 10px;
+        border: 2px solid var(--line);
+        border-radius: 0;
+        background: #fff;
+        color: var(--ink);
+        font: inherit;
+        box-shadow: inset 2px 2px 0 rgba(0, 0, 0, .08);
+      }
+
+      input:focus {
+        outline: 3px solid var(--yellow);
+        outline-offset: 1px;
+      }
+
+      button {
+        min-height: 50px;
+        padding: 10px 12px;
+        border: 3px solid #111;
+        border-radius: 0;
+        color: #111;
+        background: var(--yellow);
+        font: 900 17px/1.1 Arial, Helvetica, sans-serif;
+        text-align: center;
+        text-transform: uppercase;
+        cursor: pointer;
+        box-shadow: 3px 3px 0 #111;
+      }
+
+      button:hover,
+      button:focus {
+        background: #fff06f;
+        transform: translate(-1px, -1px);
+        box-shadow: 4px 4px 0 #111;
+      }
+
+      .microcopy,
+      .form-error {
+        margin: 0;
+        font-size: 13px;
+      }
+
+      .form-error {
+        display: none;
+        padding: 6px;
+        border: 2px solid #9f1239;
+        color: #7f1d1d;
+        background: #fee2e2;
+        font-weight: 700;
+      }
+
+      .form-error.is-visible {
+        display: block;
+      }
+
+      section {
+        padding: 20px 10px;
+        border-bottom: 2px solid var(--line);
+      }
+
+      .section-rule {
+        display: inline-block;
+        margin-bottom: 8px;
+        padding: 2px 6px;
+        border: 1px solid var(--line);
+        background: #e5e7eb;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .two-col {
+        display: grid;
+        gap: 14px;
+      }
+
+      .municipal-card,
+      .source-card,
+      .final-form {
+        padding: 10px;
+        border: 2px solid var(--line);
+        background: #fff;
+      }
+
+      .symptoms {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 6px;
+        margin: 14px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .symptoms li {
+        display: grid;
+        grid-template-columns: 32px 1fr;
+        align-items: center;
+        gap: 8px;
+        padding: 7px;
+        border: 1px solid var(--line);
+        background: #f8fafc;
+        font-weight: 700;
+      }
+
+      .symptoms span {
+        display: grid;
+        place-items: center;
+        width: 32px;
+        height: 32px;
+        border: 1px solid var(--line);
+        background: #d8e6f8;
+        font-size: 15px;
+      }
+
+      .scale-wrap {
+        margin: 12px 0;
+        border: 2px solid var(--line);
+        background: #fff;
+      }
+
+      .scale-title {
+        margin: 0;
+        padding: 6px 8px;
+        border-bottom: 1px solid var(--line);
+        background: #d8e6f8;
+        font-weight: 700;
+      }
+
+      .scale-bar {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        min-height: 74px;
+      }
+
+      .scale-band {
+        display: grid;
+        align-content: center;
+        min-width: 0;
+        padding: 7px 5px;
+        border-right: 1px solid var(--line);
+        font-size: 12px;
+        font-weight: 700;
+        text-align: center;
+      }
+
+      .scale-band:last-child {
+        border-right: 0;
+      }
+
+      .soft {
+        background: var(--green);
+      }
+
+      .moderate {
+        background: #d7ca75;
+      }
+
+      .hard {
+        background: var(--orange);
+      }
+
+      .very-hard {
+        background: var(--red);
+      }
+
+      .evidence-card {
+        margin: 0;
+        padding: 8px;
+        border: 2px solid var(--line);
+        background: #fff;
+      }
+
+      .evidence-label {
+        display: inline-block;
+        margin-bottom: 6px;
+        padding: 2px 5px;
+        border: 1px solid var(--line);
+        background: #e5e7eb;
+        font-size: 11px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .evidence-photo {
+        display: block;
+        width: 100%;
+        border: 1px solid var(--line);
+        background: #e5e7eb;
+        object-fit: contain;
+      }
+
+      .evidence-card figcaption {
+        margin-top: 6px;
+        color: #111;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .travel-photo .evidence-photo {
+        aspect-ratio: 16 / 10;
+        object-fit: cover;
+        object-position: center;
+      }
+
+      .comparison-photo {
+        max-width: 600px;
+        margin: 12px auto;
+      }
+
+      .comparison-photo .evidence-photo {
+        aspect-ratio: auto;
+        object-position: center;
+      }
+
+      .buildup-photo {
+        margin: 0;
+      }
+
+      .buildup-photo .evidence-photo {
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        object-position: center;
+      }
+
+      .buildup-row {
+        display: grid;
+        gap: 12px;
+        margin: 0 0 12px;
+      }
+
+      .map-box {
+        margin: 12px 0;
+        padding: 10px;
+        border: 2px solid var(--line);
+        background: #eef2f7;
+      }
+
+      .map-grid {
+        display: grid;
+        grid-template-columns: repeat(9, 1fr);
+        gap: 3px;
+        margin-top: 8px;
+      }
+
+      .map-grid span {
+        aspect-ratio: 1;
+        border: 1px solid rgba(17, 17, 17, .45);
+        background: #d7ca75;
+      }
+
+      .map-grid .h {
+        background: var(--orange);
+      }
+
+      .map-grid .v {
+        background: var(--red);
+      }
+
+      .map-grid .s {
+        background: var(--green);
+      }
+
+      .inline-cta {
+        display: block;
+        width: fit-content;
+        margin-top: 4px;
+        margin-right: auto;
+        margin-left: auto;
+        padding: 8px 10px;
+        border: 2px solid var(--line);
+        background: var(--yellow);
+        color: var(--blue-dark);
+        font-weight: 900;
+      }
+
+      .source-card {
+        background: #f8fafc;
+      }
+
+      .final-form {
+        background: #eef2f7;
+      }
+
+      .faq {
+        display: grid;
+        gap: 10px;
+      }
+
+      .faq-item {
+        padding-bottom: 10px;
+        border-bottom: 1px solid #9ca3af;
+      }
+
+      .faq-item:last-child {
+        padding-bottom: 0;
+        border-bottom: 0;
+      }
+
+      .faq-item h3 {
+        margin-bottom: 4px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 17px;
+      }
+
+      footer {
+        padding: 12px 10px 18px;
+        background: #243447;
+        color: #fff;
+        font-size: 13px;
+        text-align: center;
+      }
+
+      footer a,
+      footer a:visited {
+        color: #fff;
+      }
+
+      @media (min-width: 720px) {
+        body {
+          padding: 18px;
+        }
+
+        .hero {
+          grid-template-columns: minmax(0, 1.1fr) minmax(300px, .75fr);
+          align-items: start;
+          padding: 22px;
+        }
+
+        section {
+          padding: 28px 22px;
+        }
+
+        .two-col {
+          grid-template-columns: minmax(0, 1fr) 300px;
+          align-items: start;
+        }
+
+        .symptoms {
+          grid-template-columns: repeat(5, 1fr);
+        }
+
+        .symptoms li {
+          grid-template-columns: 1fr;
+          align-content: start;
+          min-height: 112px;
+          font-size: 13px;
+          text-align: center;
+        }
+
+        .symptoms span {
+          margin: 0 auto;
+        }
+
+        .buildup-row {
+          grid-template-columns: minmax(0, 1fr) minmax(280px, 400px);
+          align-items: start;
+        }
+
+        .buildup-photo {
+          max-width: 400px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <div class="utility-bar" aria-label="Site status">
+        <span>Public lookup tool</span>
+        <span>My Apartment's Water Quality</span>
+      </div>
+
+      <header class="hero" id="top">
+        <div>
+          <p class="eyebrow">MyApartmentWaterQuality.com · Free lookup, takes about 30 seconds</p>
+          <h1>How Hard Is Your Shower Water?</h1>
+          <p class="lead">Water hardness changes from one city to the next, and it quietly decides how your hair and skin feel out of the shower. Enter your zip code to see your water's full report instantly.</p>
+        </div>
+
+        <aside class="lookup-card" aria-label="Water score lookup form">
+          <h2>Water score lookup</h2>
+          <table class="notice-table" aria-label="Lookup details">
+            <tr>
+              <th>Required</th>
+              <td>Zip code + email</td>
+            </tr>
+            <tr>
+              <th>Report</th>
+              <td>Appears on screen</td>
+            </tr>
+            <tr>
+              <th>Cost</th>
+              <td>Free</td>
+            </tr>
+          </table>
+          <form class="lookup-form" novalidate>
+            <label>
+              Zip code
+              <input name="zip" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" placeholder="Your zip code" required>
+            </label>
+            <label>
+              Email
+              <input name="email" type="email" autocomplete="email" placeholder="Your email" required>
+            </label>
+            <p class="form-error" role="alert"></p>
+            <button type="submit">SHOW MY WATER SCORE</button>
+            <p class="microcopy">Your full report appears right away, and you can download a copy to keep.</p>
+          </form>
+        </aside>
+      </header>
+
+      <section>
+        <span class="section-rule">Shower water note</span>
+        <div class="two-col">
+          <div>
+            <h2>If Your Hair Behaves Better on Vacation, This Is Probably Why</h2>
+            <p>Same products, different city. Suddenly your shampoo lathers and your skin stops feeling so tight. Most people give credit to the hotel or just being relaxed.</p>
+            <p>The boring explanation is this: the water changed. Hardness — the amount of dissolved calcium and magnesium in your water — varies enormously by location. Some cities have water that's nearly soft. Others are two steps past "very hard" on the official scale, and every rinse leaves a fine mineral film behind on hair and skin (the same buildup you see on your shower).</p>
+            <p>If you rent, this hits harder, because you didn't pick your building's water and you can't exactly renovate your way out of it. Knowing what kind of water is in your pipes is the place to start.</p>
+          </div>
+          <figure class="evidence-card travel-photo">
+            <img class="evidence-photo" src="assets/shower-hardness-comparison-wide.jpg" alt="Side by side shower glass showing mineral-heavy hard water residue compared with clearer shower glass.">
+            <figcaption>Same products. Different water.</figcaption>
+          </figure>
+        </div>
+
+        <div class="municipal-card">
+          <p><strong>Hard water most often shows up as:</strong></p>
+          <ul class="symptoms">
+            <li><span aria-hidden="true">FZ</span>Frizz and poof, no matter the product</li>
+            <li><span aria-hidden="true">TG</span>Tangles that fight the brush</li>
+            <li><span aria-hidden="true">SK</span>Tight-feeling skin after showering</li>
+            <li><span aria-hidden="true">BU</span>Buildup that makes hair feel coated</li>
+            <li><span aria-hidden="true">CW</span>Curls and waves that fall flat</li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <span class="section-rule">Hardness scale</span>
+        <h2>What Your Number Will Tell You</h2>
+        <p>The US Geological Survey measures water hardness in milligrams of calcium carbonate per liter, and sorts it into four categories:</p>
+
+        <div class="scale-wrap" aria-label="Water hardness scale">
+          <p class="scale-title">Official hardness bands, mg/L as CaCO3</p>
+          <div class="scale-bar">
+            <div class="scale-band soft">Soft<br>0–60</div>
+            <div class="scale-band moderate">Moderately hard<br>61–120</div>
+            <div class="scale-band hard">Hard<br>121–180</div>
+            <div class="scale-band very-hard">Very hard<br>over 180</div>
+          </div>
+        </div>
+        <p><strong>Soft: 0–60 · Moderately hard: 61–120 · Hard: 121–180 · Very hard: over 180</strong></p>
+
+        <figure class="evidence-card comparison-photo">
+          <span class="evidence-label">Surface comparison</span>
+          <img class="evidence-photo" src="assets/hard-soft-shower-panel.jpg" alt="Split shower comparison labeled hard water and soft water.">
+          <figcaption>Hardness is visible on shower surfaces first. Your report shows where your zip code lands.</figcaption>
+        </figure>
+
+        <p>Most of the western and east-central United States sits in the hard and very hard bands. Plenty of zip codes test at double or triple the "very hard" threshold.</p>
+        <div class="buildup-row">
+          <div>
+            <p>Here's why the number matters in the shower specifically. Those dissolved minerals don't rinse away clean — they react with soap and settle onto whatever the water touches. On your shower door, that's the white crust you scrub off. On your hair and skin, it's an invisible film that builds a little with every wash.</p>
+            <p>Your report shows exactly where your zip code lands on the scale, plus what that level of hardness typically means for hair and skin.</p>
+          </div>
+          <figure class="evidence-card buildup-photo">
+            <span class="evidence-label">Mineral buildup</span>
+            <img class="evidence-photo" src="assets/mineral-buildup-showerhead.jpg" alt="Close-up comparison of mineral buildup on a showerhead and a clean showerhead.">
+            <figcaption>Visible residue on metal and glass is the easy-to-see version of the same mineral film.</figcaption>
+          </figure>
+        </div>
+        <a class="inline-cta" href="#top">CHECK MY ZIP CODE</a>
+      </section>
+
+      <section>
+        <div class="source-card">
+          <span class="section-rule">Data sources</span>
+          <h3>Where This Data Comes From</h3>
+          <p>Your score is drawn from public water data: USGS hardness measurements and utility water-quality reporting for your area. We didn't invent the scale and we can't flatter your result. Some zip codes come back soft, and if yours does, your report will say so.</p>
+          <p>Hardness itself is well studied. Researchers publishing in the <em>International Journal of Trichology</em> measured reduced strength in hair washed repeatedly in hard water, and a <em>Journal of Investigative Dermatology</em> study found hard water leaves significantly more soap residue on skin after washing. Your report links out to both.</p>
+        </div>
+      </section>
+
+      <section>
+        <div class="final-form">
+          <h2>See What You're Showering In</h2>
+          <form class="lookup-form" novalidate>
+            <label>
+              Zip code
+              <input name="zip" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" placeholder="Your zip code" required>
+            </label>
+            <label>
+              Email
+              <input name="email" type="email" autocomplete="email" placeholder="Your email" required>
+            </label>
+            <p class="form-error" role="alert"></p>
+            <button type="submit">GET MY FREE WATER SCORE</button>
+            <p class="microcopy">Instant full report on screen, yours to download. Free either way.</p>
+          </form>
+        </div>
+      </section>
+
+      <section>
+        <div class="faq">
+          <div class="faq-item">
+            <h3>Is it actually free?</h3>
+            <p>Yes. The lookup and the full report cost nothing, and there's nothing to enter beyond your zip and email.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Where does the data come from?</h3>
+            <p>Public sources: USGS hardness data and local utility water-quality reporting. The report cites them so you can check our work.</p>
+          </div>
+          <div class="faq-item">
+            <h3>What happens after I hit the button?</h3>
+            <p>Your full report appears on screen immediately, and you can download a copy to keep. That's it, unless you decide you want more from us.</p>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        MyApartmentWaterQuality.com is an independent lookup tool, not affiliated with any government agency. Hardness data is sourced from public USGS and utility records.
+      </footer>
+    </main>
+
+    <script>
+      const forms = document.querySelectorAll(".lookup-form");
+      const zipPattern = /^\d{5}$/;
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      function storeMockLead(payload) {
+        const leads = JSON.parse(localStorage.getItem("waterReportMockLeads") || "[]");
+        leads.push(payload);
+        localStorage.setItem("waterReportMockLeads", JSON.stringify(leads));
+      }
+
+      forms.forEach((form) => {
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+
+          const zipInput = form.elements.zip;
+          const emailInput = form.elements.email;
+          const error = form.querySelector(".form-error");
+          const zip = zipInput.value.trim();
+          const email = emailInput.value.trim();
+
+          error.classList.remove("is-visible");
+          error.textContent = "";
+          zipInput.removeAttribute("aria-invalid");
+          emailInput.removeAttribute("aria-invalid");
+
+          if (!zipPattern.test(zip)) {
+            error.textContent = "Please enter a valid 5-digit zip code.";
+            error.classList.add("is-visible");
+            zipInput.setAttribute("aria-invalid", "true");
+            zipInput.focus();
+            return;
+          }
+
+          if (!emailPattern.test(email)) {
+            error.textContent = "Please enter a valid email address.";
+            error.classList.add("is-visible");
+            emailInput.setAttribute("aria-invalid", "true");
+            emailInput.focus();
+            return;
+          }
+
+          const utmParams = {};
+          new URLSearchParams(window.location.search).forEach((value, key) => {
+            if (key.toLowerCase().startsWith("utm_")) {
+              utmParams[key] = value;
+            }
+          });
+          const mockLead = {
+            email,
+            zip,
+            timestamp: new Date().toISOString(),
+            utm_params: utmParams
+          };
+          const isLocalHost = ["localhost", "127.0.0.1", ""].includes(window.location.hostname);
+
+          try {
+            const response = await fetch("/api/submit-lead", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify(mockLead)
+            });
+
+            if (!response.ok) {
+              throw new Error("Lead endpoint returned " + response.status);
+            }
+          } catch (endpointError) {
+            if (isLocalHost) {
+              storeMockLead({
+                ...mockLead,
+                fallback_reason: "submit-lead endpoint unavailable"
+              });
+            }
+          }
+
+          window.location.href = `/report?zip=${encodeURIComponent(zip)}`;
+        });
+      });
+    </script>
+  </body>
+</html>

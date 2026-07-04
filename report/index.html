@@ -1,0 +1,795 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Your Water Report | MyApartmentWaterQuality.com</title>
+    <meta name="description" content="A public-data shower water hardness report by zip code.">
+    <style>
+      :root {
+        --ink: #111;
+        --muted: #4b5563;
+        --paper: #f5f1df;
+        --panel: #fffdf4;
+        --line: #1f2937;
+        --blue: #0645ad;
+        --blue-dark: #002f75;
+        --yellow: #ffe77a;
+        --green: #b8d98f;
+        --orange: #efb36a;
+        --red: #c86f58;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background:
+          linear-gradient(rgba(255, 255, 255, .5) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, .5) 1px, transparent 1px),
+          var(--paper);
+        background-size: 26px 26px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 16px;
+        line-height: 1.45;
+      }
+
+      a {
+        color: var(--blue);
+        text-decoration: underline;
+      }
+
+      .page {
+        width: min(100%, 980px);
+        margin: 0 auto;
+        background: var(--panel);
+        border-left: 2px solid var(--line);
+        border-right: 2px solid var(--line);
+        box-shadow: 0 0 0 4px rgba(31, 41, 55, .06);
+      }
+
+      .utility-bar {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 8px 10px;
+        color: #fff;
+        background: #243447;
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+
+      header,
+      section {
+        padding: 18px 10px;
+        border-bottom: 2px solid var(--line);
+      }
+
+      header {
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, .92), rgba(255, 253, 244, .97)),
+          repeating-linear-gradient(90deg, rgba(6, 69, 173, .10) 0 8px, transparent 8px 32px);
+        border-bottom: 3px double var(--line);
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        margin-bottom: 8px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(34px, 10vw, 54px);
+        line-height: .98;
+      }
+
+      h2 {
+        margin-bottom: 10px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(25px, 7vw, 36px);
+        line-height: 1.05;
+      }
+
+      h3 {
+        margin-bottom: 8px;
+        font-size: 19px;
+      }
+
+      button,
+      .button-link {
+        display: inline-block;
+        min-height: 46px;
+        padding: 10px 12px;
+        border: 3px solid #111;
+        border-radius: 0;
+        color: #111;
+        background: var(--yellow);
+        font: 900 16px/1.1 Arial, Helvetica, sans-serif;
+        text-align: center;
+        text-transform: uppercase;
+        text-decoration: none;
+        cursor: pointer;
+        box-shadow: 3px 3px 0 #111;
+      }
+
+      input {
+        width: 100%;
+        min-height: 45px;
+        padding: 9px 10px;
+        border: 2px solid var(--line);
+        border-radius: 0;
+        background: #fff;
+        color: var(--ink);
+        font: inherit;
+        box-shadow: inset 2px 2px 0 rgba(0, 0, 0, .08);
+      }
+
+      label {
+        display: grid;
+        gap: 4px;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      form {
+        display: grid;
+        gap: 8px;
+      }
+
+      .report-header {
+        display: grid;
+        gap: 12px;
+      }
+
+      .header-meta {
+        display: grid;
+        gap: 4px;
+        margin: 0;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .section-rule,
+      .label-chip {
+        display: inline-block;
+        margin-bottom: 8px;
+        padding: 2px 6px;
+        border: 1px solid var(--line);
+        background: #e5e7eb;
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .panel {
+        padding: 10px;
+        border: 2px solid var(--line);
+        background: #fff;
+      }
+
+      .score-panel {
+        border-width: 3px;
+      }
+
+      .score-top {
+        display: grid;
+        gap: 8px;
+      }
+
+      .ppm-number {
+        margin: 0 0 8px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(54px, 18vw, 96px);
+        font-weight: 900;
+        line-height: 1;
+      }
+
+      .ppm-number span {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 16px;
+        font-weight: 900;
+      }
+
+      .band-name {
+        margin: 0;
+        padding: 5px 8px;
+        border: 2px solid var(--line);
+        width: fit-content;
+        background: var(--yellow);
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .gauge {
+        position: relative;
+        margin: 14px 0 8px;
+        padding-top: 18px;
+      }
+
+      .gauge-marker {
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translateX(-50%);
+        max-width: 54px;
+        padding: 0 4px;
+        border: 1px solid #111;
+        background: #fff;
+        font-size: 12px;
+        font-weight: 900;
+        text-align: center;
+      }
+
+      .gauge-bar {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        border: 2px solid var(--line);
+      }
+
+      .gauge-band {
+        min-height: 58px;
+        padding: 6px 4px;
+        border-right: 1px solid var(--line);
+        font-size: 11px;
+        font-weight: 900;
+        text-align: center;
+      }
+
+      .gauge-band:last-child {
+        border-right: 0;
+      }
+
+      .soft {
+        background: var(--green);
+      }
+
+      .moderate {
+        background: #d7ca75;
+      }
+
+      .hard {
+        background: var(--orange);
+      }
+
+      .very-hard {
+        background: var(--red);
+      }
+
+      .source-line {
+        margin: 10px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .sources-list {
+        display: grid;
+        gap: 7px;
+        margin: 0;
+        padding-left: 20px;
+      }
+
+      .disclosure {
+        margin: 0 0 10px;
+        font-weight: 700;
+      }
+
+      .soff-card {
+        display: grid;
+        gap: 12px;
+        background: #fff;
+      }
+
+      .product-placeholder {
+        border: 2px solid var(--line);
+        background: #f8fafc;
+      }
+
+      .product-placeholder img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 1;
+        object-fit: cover;
+      }
+
+      .fact-rows {
+        display: grid;
+        gap: 6px;
+        margin: 10px 0;
+      }
+
+      .fact-rows div {
+        padding: 7px;
+        border: 1px solid var(--line);
+        background: #f8fafc;
+        font-weight: 700;
+      }
+
+      .secondary-link {
+        margin-top: 12px;
+        margin-bottom: 0;
+        font-size: 13px;
+      }
+
+      .loading-skeleton {
+        display: grid;
+        gap: 10px;
+      }
+
+      .skeleton-line {
+        height: 20px;
+        border: 1px solid #94a3b8;
+        background: repeating-linear-gradient(90deg, #e5e7eb 0 18px, #f8fafc 18px 36px);
+      }
+
+      .unknown-form {
+        max-width: 360px;
+        margin-top: 10px;
+      }
+
+      .error-text {
+        color: #7f1d1d;
+        font-weight: 900;
+      }
+
+      footer {
+        padding: 12px 10px 18px;
+        background: #243447;
+        color: #fff;
+        font-size: 13px;
+        text-align: center;
+      }
+
+      @media (min-width: 720px) {
+        body {
+          padding: 18px;
+        }
+
+        header,
+        section {
+          padding: 24px 22px;
+        }
+
+        .report-header {
+          grid-template-columns: minmax(0, 1fr) auto;
+          align-items: start;
+        }
+
+        .score-top {
+          grid-template-columns: auto 1fr;
+          align-items: center;
+        }
+
+        .soff-card {
+          grid-template-columns: 240px minmax(0, 1fr);
+          align-items: start;
+        }
+      }
+
+      @media print {
+        body {
+          background: #fff;
+          padding: 0;
+        }
+
+        .page {
+          border: 0;
+          box-shadow: none;
+          width: 100%;
+        }
+
+        .utility-bar,
+        .download-button,
+        .reveal-section,
+        footer {
+          display: none !important;
+        }
+
+        a {
+          color: #111;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <div class="utility-bar">
+        <span>Public lookup tool</span>
+        <span>My Apartment's Water Quality</span>
+      </div>
+
+      <header class="report-header">
+        <div>
+          <p class="label-chip">Water report</p>
+          <h1>Your Water Report</h1>
+          <div class="header-meta" id="reportMeta">
+            <span>Zip: checking...</span>
+            <span>Source area: checking...</span>
+            <span>Generated: checking...</span>
+          </div>
+        </div>
+        <button class="download-button" type="button" id="downloadReport">Download report</button>
+      </header>
+
+      <div id="app">
+        <section>
+          <span class="section-rule">Lookup in progress</span>
+          <h2>Pulling water data...</h2>
+          <div class="panel loading-skeleton">
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+          </div>
+        </section>
+      </div>
+
+      <footer>
+        MyApartmentWaterQuality.com is an independent lookup tool, not affiliated with any government agency. Hardness data is sourced from public USGS and utility records.
+      </footer>
+    </main>
+
+    <script>
+      const SOURCES = {
+        usgs: {
+          label: "USGS water hardness classification",
+          url: "https://www.usgs.gov/special-topics/water-science-school/science/hardness-water"
+        },
+        trichology: {
+          label: "International Journal of Trichology hard-water hair study",
+          url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC3927171/"
+        },
+        jid: {
+          label: "Journal of Investigative Dermatology hard-water skin study",
+          url: "https://pubmed.ncbi.nlm.nih.gov/?term=hard+water+soap+residue+skin+Journal+of+Investigative+Dermatology"
+        }
+      };
+
+      const params = new URLSearchParams(window.location.search);
+      const zip = (params.get("zip") || "").trim();
+      const app = document.getElementById("app");
+      const reportMeta = document.getElementById("reportMeta");
+      const downloadButton = document.getElementById("downloadReport");
+      let revealTracked = false;
+
+      function track(name, payload = {}) {
+        const event = {
+          name,
+          payload,
+          timestamp: new Date().toISOString()
+        };
+        const events = JSON.parse(localStorage.getItem("waterReportEvents") || "[]");
+        events.push(event);
+        localStorage.setItem("waterReportEvents", JSON.stringify(events));
+        console.log("[water-report-event]", event);
+      }
+
+      function escapeHtml(value) {
+        return String(value).replace(/[&<>"']/g, (char) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#039;"
+        })[char]);
+      }
+
+      function todayLabel() {
+        return new Intl.DateTimeFormat("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric"
+        }).format(new Date());
+      }
+
+      function bandClass(band) {
+        if (band === "Soft") return "soft";
+        if (band === "Moderately hard") return "moderate";
+        if (band === "Hard") return "hard";
+        return "very-hard";
+      }
+
+      function markerPosition(ppm) {
+        return Math.max(7, Math.min(93, (Math.min(ppm, 240) / 240) * 100));
+      }
+
+      function scoreLine(record) {
+        const ppm = Number(record.ppm);
+        if (record.band === "Very hard") {
+          if (ppm <= 200) return "That sits just past the 'very hard' line on the USGS scale.";
+          return `That's ${Math.round(((ppm - 180) / 180) * 100)}% past the threshold where the USGS scale simply stops measuring harder.`;
+        }
+        if (record.band === "Hard") return "That's firmly in the 'hard' band — most of the western and east-central US tests here or higher.";
+        if (record.band === "Moderately hard") return "That's mid-scale: not extreme, but enough to notice on glass, fixtures, and hair.";
+        return "That's genuinely soft water. Your zip is in the minority.";
+      }
+
+      function meaningCopy(record) {
+        if (record.band === "Soft") {
+          return `
+            <p>Good news: hardness is one problem you don't have. The mineral film that frustrates most of the country isn't building up on your hair and skin, and if you're still fighting frizz or post-shower dryness, water hardness is a suspect you can honestly cross off the list. Chlorine is worth ruling out next, since it's the other water variable that varies by city.</p>
+          `;
+        }
+
+        if (record.band === "Moderately hard") {
+          return `
+            <p>Water in the moderately hard range carries enough dissolved calcium and magnesium to leave a film behind slowly. On glass and fixtures, that can show up as spots and light buildup. On hair and skin, the effect is subtler than very hard water, but still real enough for some people to notice: hair that feels coated faster than expected, skin that feels a little tight after washing, and a travel contrast that is there but not dramatic.</p>
+            <p>Research backs the pattern. A study in the <em>International Journal of Trichology</em> measured reduced tensile strength in hair washed repeatedly in hard water, and researchers in the <em>Journal of Investigative Dermatology</em> found hard water leaves significantly more soap residue on skin after washing. Both are linked below.</p>
+          `;
+        }
+
+        const bandWord = record.band.toLowerCase();
+        return `
+          <p>Water in the ${bandWord} range carries enough dissolved calcium and magnesium that every rinse leaves a thin mineral film behind. On your shower door, that film builds into the white crust you can see. On hair, it builds into a coating you can feel: strands that seem dry no matter how much conditioner they drink, frizz that ignores product, and waves or curls that fall flat by day two. On skin, the minerals react with soap and keep it from rinsing away fully, which is the tight, squeaky feeling after you towel off.</p>
+          <p>Research backs the pattern. A study in the <em>International Journal of Trichology</em> measured reduced tensile strength in hair washed repeatedly in hard water — strands become weaker and rougher. And researchers in the <em>Journal of Investigative Dermatology</em> found hard water leaves significantly more soap residue on skin after washing, drawing moisture out through the skin barrier. Both are linked below.</p>
+          <p>If your hair or skin behaves noticeably better when you travel, this is the mechanism. It was never your products.</p>
+        `;
+      }
+
+      function gaugeHtml(record) {
+        return `
+          <div class="gauge" aria-label="Water hardness gauge">
+            <div class="gauge-marker" style="left:${markerPosition(record.ppm)}%">${record.ppm}</div>
+            <div class="gauge-bar">
+              <div class="gauge-band soft">Soft<br>0-60</div>
+              <div class="gauge-band moderate">Moderately hard<br>61-120</div>
+              <div class="gauge-band hard">Hard<br>121-180</div>
+              <div class="gauge-band very-hard">Very hard<br>181+</div>
+            </div>
+          </div>
+        `;
+      }
+
+      function sourcesHtml(record) {
+        return `
+          <section>
+            <span class="section-rule">Sources</span>
+            <h2>Where This Number Comes From</h2>
+            <ol class="sources-list">
+              <li><a href="${SOURCES.usgs.url}" target="_blank" rel="noopener">${SOURCES.usgs.label}</a></li>
+              <li><a href="${escapeHtml(record.source_url)}" target="_blank" rel="noopener">${escapeHtml(record.source_label)}</a></li>
+              <li><a href="${SOURCES.trichology.url}" target="_blank" rel="noopener">${SOURCES.trichology.label}</a></li>
+              <li><a href="${SOURCES.jid.url}" target="_blank" rel="noopener">${SOURCES.jid.label}</a></li>
+            </ol>
+          </section>
+        `;
+      }
+
+      function revealHtml(record) {
+        if (record.band === "Soft") {
+          return `
+            <section>
+              <span class="section-rule">Check another zip</span>
+              <h2>Want to check another zip?</h2>
+              <p>Try somewhere you used to live, or somewhere you're moving.</p>
+              <form class="unknown-form" data-relookup>
+                <label>Zip code
+                  <input name="zip" type="text" inputmode="numeric" maxlength="5" placeholder="Another zip code" required>
+                </label>
+                <button type="submit">Look up zip</button>
+              </form>
+            </section>
+          `;
+        }
+
+        return `
+          <section class="reveal-section" id="reveal">
+            <span class="section-rule">Analysis</span>
+            <h2>Why the Things You've Tried Keep Wearing Off</h2>
+            <p>If you've been through the clarifying shampoos and the vinegar rinses — maybe even a filtered showerhead — and everything drifted back to normal within a few weeks, here's the missing piece: filtering and softening are two different jobs.</p>
+            <p>A shower filter reduces chlorine. That's worthwhile, and it's also all that most of them do — the certification most shower filters carry (NSF/ANSI 177) covers chlorine reduction only. The calcium and magnesium in your water pass straight through the filter and onto you. Even filters with 'hard water' printed on the box will admit in the fine print that they don't remove hardness minerals.</p>
+            <p>The only thing that removes hardness minerals is a water softener, which swaps the calcium and magnesium out of the water through a process called ion exchange. It's the technology inside whole-house softening systems, and it's why people who have one say they could never go back. The catch has always been that whole-house systems cost thousands and require plumbing you may not own the right to touch.</p>
+            <p class="disclosure">This free report is supported by AG Water Softener. Here's why we think it's relevant to your result.</p>
+            <div class="panel soff-card" id="soff-placeholder">
+              <div class="product-placeholder">
+                <img src="../assets/ag-water-softener-product.jpg" alt="AG Water Softener product.">
+              </div>
+              <div>
+                <h3>AG Water Softener is a portable shower water softener built for renters.</h3>
+                <p>Real ion-exchange softening — the whole-house technology, sized for a shower — installs in about ten minutes without a plumber, and comes down just as fast when you move.</p>
+                <div class="fact-rows">
+                  <div>Water tests soft on a standard hardness strip (strips included)</div>
+                  <div>$249, free shipping</div>
+                  <div>Better hair and skin in 60 days or your money back</div>
+                </div>
+                <a class="button-link" href="#soff-placeholder" target="_blank" rel="noopener" data-soff-cta>SEE HOW AG WATER SOFTENER WORKS</a>
+                <p class="secondary-link">No rush — your report is downloadable and this page isn't going anywhere.</p>
+              </div>
+            </div>
+            <p>Either way, now you know your number. Most people never do.</p>
+          </section>
+        `;
+      }
+
+      function renderKnown(record) {
+        const estimateLabel = record.estimated ? '<p class="label-chip">Estimated from state-level data</p>' : '';
+        const qaLabel = record.qa_only ? '<p class="label-chip">QA-only sample</p>' : '';
+        reportMeta.innerHTML = `
+          <span>Zip: ${escapeHtml(record.zip)}</span>
+          <span>Source area: ${escapeHtml(record.city_or_county)}</span>
+          <span>Generated: ${todayLabel()}</span>
+        `;
+
+        app.innerHTML = `
+          <section>
+            <span class="section-rule">Score module</span>
+            <div class="panel score-panel">
+              <div class="score-top">
+                <div>
+                  <p class="ppm-number">${record.ppm}<span> mg/L</span></p>
+                  <p class="band-name ${bandClass(record.band)}">${escapeHtml(record.band)}</p>
+                </div>
+                <div>
+                  ${estimateLabel}
+                  ${qaLabel}
+                  <h2>${escapeHtml(record.city_or_county)} shower water</h2>
+                  <p>${scoreLine(record)}</p>
+                </div>
+              </div>
+              ${gaugeHtml(record)}
+            </div>
+            <p class="source-line">Source: ${escapeHtml(record.source_label)}. ${record.estimated ? "Estimated from state-level data. " : ""}Every displayed number in this report carries its source.</p>
+          </section>
+          <section>
+            <span class="section-rule">Hair and skin meaning</span>
+            <h2>What This Means For Your Hair And Skin</h2>
+            ${meaningCopy(record)}
+          </section>
+          ${sourcesHtml(record)}
+          ${revealHtml(record)}
+        `;
+
+        document.title = `${record.zip} Water Report | MyApartmentWaterQuality.com`;
+        track("report_viewed", { zip: record.zip, band: record.band });
+        bindRelookup();
+        bindSoffCta(record);
+        observeReveal(record);
+      }
+
+      function renderUnknown() {
+        reportMeta.innerHTML = `
+          <span>Zip: ${escapeHtml(zip || "missing")}</span>
+          <span>Source area: not found</span>
+          <span>Generated: ${todayLabel()}</span>
+        `;
+        app.innerHTML = `
+          <section>
+            <span class="section-rule">No match</span>
+            <h2>We couldn't find water data for that zip.</h2>
+            <p class="error-text">Double-check it, or try a neighboring zip code.</p>
+            <form class="unknown-form" data-relookup>
+              <label>Zip code
+                <input name="zip" type="text" inputmode="numeric" maxlength="5" placeholder="Another zip code" required>
+              </label>
+              <button type="submit">Look up zip</button>
+            </form>
+          </section>
+        `;
+        track("unknown_zip_shown", { zip });
+        bindRelookup();
+      }
+
+      function renderError() {
+        reportMeta.innerHTML = `
+          <span>Zip: missing or invalid</span>
+          <span>Source area: not found</span>
+          <span>Generated: ${todayLabel()}</span>
+        `;
+        app.innerHTML = `
+          <section>
+            <span class="section-rule">Lookup error</span>
+            <h2>We couldn't find water data for that zip.</h2>
+            <p class="error-text">Double-check it, or try a neighboring zip code.</p>
+            <form class="unknown-form" data-relookup>
+              <label>Zip code
+                <input name="zip" type="text" inputmode="numeric" maxlength="5" placeholder="Another zip code" required>
+              </label>
+              <button type="submit">Look up zip</button>
+            </form>
+          </section>
+        `;
+        bindRelookup();
+      }
+
+      function bindRelookup() {
+        document.querySelectorAll("[data-relookup]").forEach((form) => {
+          form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const nextZip = form.elements.zip.value.trim();
+            if (!/^\d{5}$/.test(nextZip)) {
+              form.elements.zip.focus();
+              return;
+            }
+            track("relookup_used", { from_zip: zip, to_zip: nextZip });
+            window.location.href = `/report?zip=${encodeURIComponent(nextZip)}`;
+          });
+        });
+      }
+
+      function bindSoffCta(record) {
+        const cta = document.querySelector("[data-soff-cta]");
+        if (!cta) return;
+        cta.addEventListener("click", () => {
+          track("soff_cta_click", { zip: record.zip, band: record.band });
+        });
+      }
+
+      function observeReveal(record) {
+        const reveal = document.getElementById("reveal");
+        if (!reveal || !("IntersectionObserver" in window)) return;
+        const observer = new IntersectionObserver((entries) => {
+          if (revealTracked) return;
+          if (entries.some((entry) => entry.isIntersecting)) {
+            revealTracked = true;
+            track("scrolled_to_reveal", { zip: record.zip, band: record.band });
+            observer.disconnect();
+          }
+        }, { threshold: 0.25 });
+        observer.observe(reveal);
+      }
+
+      downloadButton.addEventListener("click", () => {
+        track("download_click", { zip });
+        window.print();
+      });
+
+      async function init() {
+        app.innerHTML = `
+          <section>
+            <span class="section-rule">Lookup in progress</span>
+            <h2>Pulling water data for ${escapeHtml(zip || "your zip")}...</h2>
+            <div class="panel loading-skeleton">
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line"></div>
+            </div>
+          </section>
+        `;
+
+        await new Promise((resolve) => setTimeout(resolve, 600));
+
+        if (!/^\d{5}$/.test(zip)) {
+          renderError();
+          return;
+        }
+
+        try {
+          const response = await fetch(new URL("../data/hardness-lookup.json", window.location.href));
+          const lookup = await response.json();
+          let record = lookup.zips[zip];
+          if (!record && lookup.estimated_prefixes) {
+            const prefix = Object.keys(lookup.estimated_prefixes)
+              .sort((a, b) => b.length - a.length)
+              .find((candidate) => zip.startsWith(candidate));
+            if (prefix) {
+              record = {
+                zip,
+                ...lookup.estimated_prefixes[prefix],
+                estimated: true
+              };
+            }
+          }
+          if (!record) {
+            renderUnknown();
+            return;
+          }
+          renderKnown(record);
+        } catch (error) {
+          console.error(error);
+          renderError();
+        }
+      }
+
+      init();
+    </script>
+  </body>
+</html>
