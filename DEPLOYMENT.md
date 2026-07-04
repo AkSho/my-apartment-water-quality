@@ -17,7 +17,7 @@ not durable.
 
 ## Airtable Table Fields
 
-Create these fields in the lead table:
+Preferred launch-schema fields:
 
 - `email`
 - `zip`
@@ -34,6 +34,13 @@ Create these fields in the lead table:
 
 Plain text fields are acceptable for launch. `hardness_ppm` can be numeric and
 `hardness_estimated` can be checkbox/boolean if preferred.
+
+The endpoint also supports the simple Airtable starter table visible in the
+current base. If the launch-schema write fails, it retries with:
+
+- `Email Address`
+- `Zip Code`
+- `Source/Page`
 
 ## Data Build
 

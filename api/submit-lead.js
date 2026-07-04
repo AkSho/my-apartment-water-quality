@@ -56,6 +56,46 @@ function airtableFields(lead) {
   };
 }
 
+function airtableVisibleFields(lead) {
+  return {
+    "Email Address": lead.email,
+    "Zip Code": lead.zip,
+    "Source/Page": lead.source_url || "MyApartmentWaterQuality.com"
+  };
+}
+
+async function postAirtableRecord(config, fields) {
+  const endpoint = `https://api.airtable.com/v0/${encodeURIComponent(config.baseId)}/${encodeURIComponent(config.tableName)}`;
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${config.apiKey}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      records: [
+        {
+          fields
+        }
+      ]
+    })
+  });
+
+  if (!response.ok) {
+    return {
+      ok: false,
+      status: response.status,
+      detail: (await response.text()).slice(0, 500)
+    };
+  }
+
+  const payload = await response.json();
+  return {
+    ok: true,
+    id: payload.records && payload.records[0] && payload.records[0].id
+  };
+}
+
 async function writeToAirtable(lead) {
   const config = airtableConfig();
   const missing = Object.entries(config)
@@ -70,36 +110,34 @@ async function writeToAirtable(lead) {
     };
   }
 
-  const endpoint = `https://api.airtable.com/v0/${encodeURIComponent(config.baseId)}/${encodeURIComponent(config.tableName)}`;
-  const response = await fetch(endpoint, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${config.apiKey}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      records: [
-        {
-          fields: airtableFields(lead)
-        }
-      ]
-    })
-  });
-
-  if (!response.ok) {
+  const primary = await postAirtableRecord(config, airtableFields(lead));
+  if (primary.ok) {
     return {
-      ok: false,
-      error: "airtable_write_failed",
-      status: response.status,
-      detail: (await response.text()).slice(0, 500)
+      ...primary,
+      field_mode: "launch_schema"
     };
   }
 
-  const payload = await response.json();
-  return {
-    ok: true,
-    id: payload.records && payload.records[0] && payload.records[0].id
-  };
+  const fallback = await postAirtableRecord(config, airtableVisibleFields(lead));
+  if (fallback.ok) {
+    return {
+      ...fallback,
+      field_mode: "visible_table_schema"
+    };
+  }
+
+  if (!fallback.ok) {
+    return {
+      ok: false,
+      error: "airtable_write_failed",
+      status: fallback.status,
+      detail: fallback.detail,
+      first_attempt: {
+        status: primary.status,
+        detail: primary.detail
+      }
+    };
+  }
 }
 
 module.exports = async function handler(req, res) {
@@ -164,6 +202,7 @@ module.exports = async function handler(req, res) {
   res.status(200).json({
     ok: true,
     lead_id: airtable.id,
+    field_mode: airtable.field_mode,
     hardness_band: lead.hardness_band,
     hardness_ppm: lead.hardness_ppm,
     estimated: lead.hardness_estimated
@@ -172,5 +211,6 @@ module.exports = async function handler(req, res) {
 
 module.exports._test = {
   airtableFields,
+  airtableVisibleFields,
   findHardness
 };
