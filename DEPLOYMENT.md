@@ -31,6 +31,8 @@ Preferred launch-schema fields:
 - `utm_term`
 - `timestamp`
 - `source_url`
+- `lookup_status`
+- `matched_source`
 
 Plain text fields are acceptable for launch. `hardness_ppm` can be numeric and
 `hardness_estimated` can be checkbox/boolean if preferred.
@@ -41,6 +43,10 @@ current base. If the launch-schema write fails, it retries with:
 - `Email Address`
 - `Zip Code`
 - `Source/Page`
+- `Lookup Status`
+- `Hardness Band`
+- `Hardness PPM`
+- `Matched Source`
 
 ## Data Build
 

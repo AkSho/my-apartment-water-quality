@@ -52,11 +52,25 @@ function airtableFields(lead) {
     utm_content: lead.utm_params.utm_content || "",
     utm_term: lead.utm_params.utm_term || "",
     timestamp: lead.timestamp,
-    source_url: lead.source_url || ""
+    source_url: lead.source_url || "",
+    lookup_status: lead.lookup_status,
+    matched_source: lead.matched_source
   };
 }
 
 function airtableVisibleFields(lead) {
+  return {
+    "Email Address": lead.email,
+    "Zip Code": lead.zip,
+    "Source/Page": lead.source_url || "MyApartmentWaterQuality.com",
+    "Lookup Status": lead.lookup_status,
+    "Hardness Band": lead.hardness_band || "",
+    "Hardness PPM": lead.hardness_ppm,
+    "Matched Source": lead.matched_source
+  };
+}
+
+function airtableMinimalVisibleFields(lead) {
   return {
     "Email Address": lead.email,
     "Zip Code": lead.zip,
@@ -126,18 +140,28 @@ async function writeToAirtable(lead) {
     };
   }
 
-  if (!fallback.ok) {
+  const minimalFallback = await postAirtableRecord(config, airtableMinimalVisibleFields(lead));
+  if (minimalFallback.ok) {
     return {
-      ok: false,
-      error: "airtable_write_failed",
-      status: fallback.status,
-      detail: fallback.detail,
-      first_attempt: {
-        status: primary.status,
-        detail: primary.detail
-      }
+      ...minimalFallback,
+      field_mode: "minimal_visible_table_schema"
     };
   }
+
+  return {
+    ok: false,
+    error: "airtable_write_failed",
+    status: minimalFallback.status,
+    detail: minimalFallback.detail,
+    first_attempt: {
+      status: primary.status,
+      detail: primary.detail
+    },
+    second_attempt: {
+      status: fallback.status,
+      detail: fallback.detail
+    }
+  };
 }
 
 module.exports = async function handler(req, res) {
@@ -175,7 +199,9 @@ module.exports = async function handler(req, res) {
     hardness_ppm: hardness ? hardness.ppm : null,
     hardness_band: hardness ? hardness.band : null,
     hardness_estimated: Boolean(hardness && hardness.estimated),
-    source_url: hardness ? hardness.source_url : ""
+    source_url: hardness ? hardness.source_url : "",
+    lookup_status: hardness ? (hardness.estimated ? "estimated_match" : "exact_match") : "no_match",
+    matched_source: hardness ? hardness.source_label : "No matching report in current lookup coverage"
   };
 
   console.log(JSON.stringify({
@@ -205,12 +231,14 @@ module.exports = async function handler(req, res) {
     field_mode: airtable.field_mode,
     hardness_band: lead.hardness_band,
     hardness_ppm: lead.hardness_ppm,
-    estimated: lead.hardness_estimated
+    estimated: lead.hardness_estimated,
+    lookup_status: lead.lookup_status
   });
 };
 
 module.exports._test = {
   airtableFields,
   airtableVisibleFields,
+  airtableMinimalVisibleFields,
   findHardness
 };

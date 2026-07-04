@@ -664,8 +664,8 @@
         app.innerHTML = `
           <section>
             <span class="section-rule">No match</span>
-            <h2>We couldn't find water data for that zip.</h2>
-            <p class="error-text">Double-check it, or try a neighboring zip code.</p>
+            <h2>That zip is not in the live lookup yet.</h2>
+            <p class="error-text">We captured your request and are still expanding coverage. Try a nearby zip, or check back as more utility and public records are added.</p>
             <form class="unknown-form" data-relookup>
               <label>Zip code
                 <input name="zip" type="text" inputmode="numeric" maxlength="5" placeholder="Another zip code" required>
@@ -687,8 +687,8 @@
         app.innerHTML = `
           <section>
             <span class="section-rule">Lookup error</span>
-            <h2>We couldn't find water data for that zip.</h2>
-            <p class="error-text">Double-check it, or try a neighboring zip code.</p>
+            <h2>We couldn't run that lookup.</h2>
+            <p class="error-text">Check that the zip code has five digits, or try a nearby zip while coverage expands.</p>
             <form class="unknown-form" data-relookup>
               <label>Zip code
                 <input name="zip" type="text" inputmode="numeric" maxlength="5" placeholder="Another zip code" required>
