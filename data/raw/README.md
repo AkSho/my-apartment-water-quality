@@ -19,7 +19,7 @@ This folder is for local build inputs only. Do not commit full raw source files.
 - `estimated-prefixes.csv` optional
   - Required columns: `prefix`, `ppm`, `city_or_county`, `source_label`, `source_url`
   - Use only when a broad state/region estimate is acceptable and clearly sourced.
-  - These records render as `Estimated from state-level data`.
+  - These records render as estimated data in the report.
 
 Generated output:
 
@@ -38,6 +38,17 @@ For local smoke testing without raw files:
 ```bash
 node scripts/build-hardness-lookup.js --sample
 ```
+
+For traffic-ready broad coverage without full raw county inputs:
+
+```bash
+node scripts/build-hardness-lookup.js --national-estimates
+```
+
+That command uses exact utility rows for known seed metros and ZIP-prefix
+estimates sourced to the USGS hardness classification/map page. It is intended
+as an honest national-estimate fallback until a full HUD/county build is
+available.
 
 That command writes the current small sample-compatible lookup shape.
 

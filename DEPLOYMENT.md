@@ -50,7 +50,16 @@ current base. If the launch-schema write fails, it retries with:
 
 ## Data Build
 
-For the current launch seed dataset:
+For the traffic-ready national estimate dataset:
+
+```bash
+node scripts/build-hardness-lookup.js --national-estimates
+```
+
+This keeps exact utility rows for known seed metros and adds clearly labeled
+ZIP-prefix estimates for broad national coverage.
+
+For the small seed dataset:
 
 ```bash
 node scripts/build-hardness-lookup.js --sample
@@ -76,14 +85,13 @@ After deploy, verify:
 - `/`
 - `/report?zip=78701`
 - `/report?zip=97205`
-- `/report?zip=99999`
+- `/report?zip=60601`
+- `/report?zip=89101`
+- `/report?zip=30301`
+- `/report?zip=00000`
 - `POST /api/submit-lead` with a valid email and ZIP
 - Email never appears in the report URL
-- AG Water Softener CTA opens in a new tab
+- AG CTA opens `https://agsoftener.com/` in a new tab
+- hard reports link to `https://agsoftener.com/?band=hard`
+- very-hard reports link to `https://agsoftener.com/?band=veryhard`
 - Print/download hides the AG reveal section
-
-## Current Limitation
-
-The AG CTA still points to the page placeholder until the real PDP URL exists.
-This is acceptable for tool-traffic testing, but not for a complete purchase
-path.

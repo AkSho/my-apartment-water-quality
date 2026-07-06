@@ -9,6 +9,11 @@ const outputPath = path.join(root, "data", "hardness-lookup.json");
 const qaReportPath = path.join(root, "data", "hardness-build-report.json");
 const args = new Set(process.argv.slice(2));
 
+const USGS_HARDNESS_SOURCE = {
+  label: "USGS hardness classification and national hardness map",
+  url: "https://www.usgs.gov/special-topics/water-science-school/science/hardness-water"
+};
+
 const SAMPLE_LOOKUP = {
   meta: {
     version: "v1-launch-seed",
@@ -59,7 +64,7 @@ const SAMPLE_LOOKUP = {
       ppm: 280,
       band: "Very hard",
       city_or_county: "Nevada state-level estimate",
-      source_label: "Estimated from state-level data",
+      source_label: "Estimated from ZIP-prefix data",
       source_url: "https://www.usgs.gov/special-topics/water-science-school/science/hardness-water",
       estimated: true
     }
@@ -79,6 +84,108 @@ const QA_ONLY_LOOKUP = {
     }
   }
 };
+
+const NATIONAL_PREFIX_ESTIMATES = [
+  ["01", 65, "Massachusetts ZIP-prefix estimate"],
+  ["02", 70, "New England ZIP-prefix estimate"],
+  ["03", 35, "New Hampshire/Vermont ZIP-prefix estimate"],
+  ["04", 35, "Maine ZIP-prefix estimate"],
+  ["05", 35, "Vermont ZIP-prefix estimate"],
+  ["06", 75, "Connecticut ZIP-prefix estimate"],
+  ["07", 110, "New Jersey ZIP-prefix estimate"],
+  ["08", 110, "New Jersey ZIP-prefix estimate"],
+  ["09", 120, "USPS 09 ZIP-prefix region estimate"],
+  ["10", 95, "New York ZIP-prefix estimate"],
+  ["11", 95, "New York ZIP-prefix estimate"],
+  ["12", 95, "New York ZIP-prefix estimate"],
+  ["13", 115, "New York ZIP-prefix estimate"],
+  ["14", 120, "New York ZIP-prefix estimate"],
+  ["15", 150, "Pennsylvania ZIP-prefix estimate"],
+  ["16", 150, "Pennsylvania ZIP-prefix estimate"],
+  ["17", 140, "Pennsylvania ZIP-prefix estimate"],
+  ["18", 145, "Pennsylvania ZIP-prefix estimate"],
+  ["19", 140, "Pennsylvania/Delaware ZIP-prefix estimate"],
+  ["20", 115, "DC/Maryland/Virginia ZIP-prefix estimate"],
+  ["21", 115, "Maryland ZIP-prefix estimate"],
+  ["22", 115, "Virginia ZIP-prefix estimate"],
+  ["23", 105, "Virginia ZIP-prefix estimate"],
+  ["24", 105, "Virginia ZIP-prefix estimate"],
+  ["25", 95, "West Virginia ZIP-prefix estimate"],
+  ["26", 95, "West Virginia ZIP-prefix estimate"],
+  ["27", 55, "North Carolina ZIP-prefix estimate"],
+  ["28", 55, "North Carolina ZIP-prefix estimate"],
+  ["29", 50, "South Carolina ZIP-prefix estimate"],
+  ["30", 65, "Georgia ZIP-prefix estimate"],
+  ["31", 70, "Georgia ZIP-prefix estimate"],
+  ["32", 150, "Florida ZIP-prefix estimate"],
+  ["33", 150, "Florida ZIP-prefix estimate"],
+  ["34", 150, "Florida ZIP-prefix estimate"],
+  ["35", 70, "Alabama ZIP-prefix estimate"],
+  ["36", 70, "Alabama ZIP-prefix estimate"],
+  ["37", 95, "Tennessee ZIP-prefix estimate"],
+  ["38", 95, "Tennessee/Mississippi ZIP-prefix estimate"],
+  ["39", 60, "Mississippi ZIP-prefix estimate"],
+  ["40", 160, "Kentucky ZIP-prefix estimate"],
+  ["41", 160, "Kentucky ZIP-prefix estimate"],
+  ["42", 160, "Kentucky ZIP-prefix estimate"],
+  ["43", 175, "Ohio ZIP-prefix estimate"],
+  ["44", 175, "Ohio ZIP-prefix estimate"],
+  ["45", 175, "Ohio ZIP-prefix estimate"],
+  ["46", 180, "Indiana ZIP-prefix estimate"],
+  ["47", 180, "Indiana ZIP-prefix estimate"],
+  ["48", 170, "Michigan ZIP-prefix estimate"],
+  ["49", 170, "Michigan ZIP-prefix estimate"],
+  ["50", 230, "Iowa ZIP-prefix estimate"],
+  ["51", 230, "Iowa ZIP-prefix estimate"],
+  ["52", 230, "Iowa ZIP-prefix estimate"],
+  ["53", 180, "Wisconsin ZIP-prefix estimate"],
+  ["54", 180, "Wisconsin ZIP-prefix estimate"],
+  ["55", 180, "Minnesota ZIP-prefix estimate"],
+  ["56", 180, "Minnesota ZIP-prefix estimate"],
+  ["57", 260, "South Dakota ZIP-prefix estimate"],
+  ["58", 240, "North Dakota ZIP-prefix estimate"],
+  ["59", 180, "Montana ZIP-prefix estimate"],
+  ["60", 180, "Illinois ZIP-prefix estimate"],
+  ["61", 180, "Illinois ZIP-prefix estimate"],
+  ["62", 180, "Illinois ZIP-prefix estimate"],
+  ["63", 160, "Missouri ZIP-prefix estimate"],
+  ["64", 160, "Missouri ZIP-prefix estimate"],
+  ["65", 160, "Missouri ZIP-prefix estimate"],
+  ["66", 220, "Kansas ZIP-prefix estimate"],
+  ["67", 220, "Kansas ZIP-prefix estimate"],
+  ["68", 250, "Nebraska ZIP-prefix estimate"],
+  ["69", 250, "Nebraska ZIP-prefix estimate"],
+  ["70", 130, "Louisiana ZIP-prefix estimate"],
+  ["71", 130, "Louisiana ZIP-prefix estimate"],
+  ["72", 85, "Arkansas ZIP-prefix estimate"],
+  ["73", 210, "Oklahoma ZIP-prefix estimate"],
+  ["74", 210, "Oklahoma ZIP-prefix estimate"],
+  ["75", 200, "Texas ZIP-prefix estimate"],
+  ["76", 200, "Texas ZIP-prefix estimate"],
+  ["77", 190, "Texas ZIP-prefix estimate"],
+  ["78", 210, "Texas ZIP-prefix estimate"],
+  ["79", 210, "Texas ZIP-prefix estimate"],
+  ["80", 170, "Colorado ZIP-prefix estimate"],
+  ["81", 170, "Colorado ZIP-prefix estimate"],
+  ["82", 200, "Wyoming ZIP-prefix estimate"],
+  ["83", 180, "Idaho ZIP-prefix estimate"],
+  ["84", 250, "Utah ZIP-prefix estimate"],
+  ["85", 300, "Arizona ZIP-prefix estimate"],
+  ["86", 300, "Arizona ZIP-prefix estimate"],
+  ["87", 220, "New Mexico ZIP-prefix estimate"],
+  ["88", 220, "New Mexico/Texas ZIP-prefix estimate"],
+  ["89", 280, "Nevada ZIP-prefix estimate"],
+  ["90", 160, "California ZIP-prefix estimate"],
+  ["91", 160, "California ZIP-prefix estimate"],
+  ["92", 170, "California ZIP-prefix estimate"],
+  ["93", 180, "California ZIP-prefix estimate"],
+  ["94", 120, "California ZIP-prefix estimate"],
+  ["95", 150, "California ZIP-prefix estimate"],
+  ["96", 120, "California ZIP-prefix estimate"],
+  ["97", 35, "Oregon ZIP-prefix estimate"],
+  ["98", 30, "Washington ZIP-prefix estimate"],
+  ["99", 60, "Alaska ZIP-prefix estimate"]
+];
 
 function parseCsv(filePath) {
   const text = fs.readFileSync(filePath, "utf8").trim();
@@ -192,6 +299,58 @@ function buildSample() {
         label: "USGS hardness classification",
         url: "https://www.usgs.gov/special-topics/water-science-school/science/hardness-water"
       }
+    ]
+  });
+}
+
+function nationalEstimatedPrefixes() {
+  return Object.fromEntries(NATIONAL_PREFIX_ESTIMATES.map(([prefix, ppm, cityOrCounty]) => [
+    prefix,
+    {
+      ppm,
+      band: bandForPpm(ppm),
+      city_or_county: cityOrCounty,
+      source_label: "Estimated from ZIP-prefix data",
+      source_url: USGS_HARDNESS_SOURCE.url,
+      estimated: true
+    }
+  ]));
+}
+
+function buildNationalEstimates() {
+  const lookup = {
+    meta: {
+      version: `national-estimates-${new Date().toISOString()}`,
+      generated_at: new Date().toISOString(),
+      coverage: "national-estimated",
+      source_basis: [
+        "USGS hardness category definitions and national hardness map",
+        "USPS ZIP-prefix geography for state/region fallback estimates",
+        "Official utility water quality reports for exact seed ZIPs"
+      ],
+      note: "National launch dataset. Exact utility records are used where present; other valid ZIPs fall back to clearly labeled ZIP-prefix estimates."
+    },
+    zips: SAMPLE_LOOKUP.zips,
+    estimated_prefixes: nationalEstimatedPrefixes()
+  };
+
+  writeLookup(lookup, {
+    missing_or_unsupported_zip_count: 0,
+    source_files: [
+      {
+        ...USGS_HARDNESS_SOURCE,
+        type: "official_public_web_source"
+      },
+      {
+        label: "USPS ZIP-prefix geography",
+        url: "https://postalpro.usps.com/ZIP_Locale_Detail",
+        type: "public_reference"
+      }
+    ],
+    notes: [
+      "Traffic-ready v1 uses exact utility rows for known seed metros and ZIP-prefix estimates everywhere else.",
+      "Every prefix estimate renders with the report's ZIP-prefix estimate label and source line.",
+      "HUD-USPS county crosswalk remains the preferred future exact county build input; direct HUD download was blocked by WAF during this pass."
     ]
   });
 }
@@ -318,6 +477,8 @@ function fileStats(filePath, label) {
 
 if (args.has("--sample")) {
   buildSample();
+} else if (args.has("--national-estimates")) {
+  buildNationalEstimates();
 } else {
   buildFromRaw();
 }

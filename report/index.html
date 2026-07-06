@@ -624,7 +624,7 @@
       }
 
       function renderKnown(record) {
-        const estimateLabel = record.estimated ? '<p class="label-chip">Estimated from state-level data</p>' : '';
+        const estimateLabel = record.estimated ? '<p class="label-chip">Estimated from ZIP-prefix data</p>' : '';
         const qaLabel = record.qa_only ? '<p class="label-chip">QA-only sample</p>' : '';
         reportMeta.innerHTML = `
           <span>Zip: ${escapeHtml(record.zip)}</span>
@@ -650,7 +650,7 @@
               </div>
               ${gaugeHtml(record)}
             </div>
-            <p class="source-line">Source: ${escapeHtml(record.source_label)}. ${record.estimated ? "Estimated from state-level data. " : ""}Every displayed number in this report carries its source.</p>
+            <p class="source-line">Source: ${escapeHtml(record.source_label)}. ${record.estimated ? "Estimated from ZIP-prefix data. " : ""}Every displayed number in this report carries its source.</p>
           </section>
           <section>
             <span class="section-rule">Hair and skin meaning</span>

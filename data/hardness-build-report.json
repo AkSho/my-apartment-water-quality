@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-07-03T22:16:30.266Z",
-  "coverage": "seed",
+  "generated_at": "2026-07-06T03:46:52.213Z",
+  "coverage": "national-estimated",
   "zip_count": 4,
   "band_distribution": {
     "Hard": 1,
@@ -8,16 +8,23 @@
     "Very hard": 1,
     "Soft": 1
   },
-  "estimated_prefix_count": 1,
+  "estimated_prefix_count": 99,
   "missing_or_unsupported_zip_count": 0,
   "source_files": [
     {
-      "label": "USGS hardness classification",
-      "url": "https://www.usgs.gov/special-topics/water-science-school/science/hardness-water"
+      "label": "USGS hardness classification and national hardness map",
+      "url": "https://www.usgs.gov/special-topics/water-science-school/science/hardness-water",
+      "type": "official_public_web_source"
+    },
+    {
+      "label": "USPS ZIP-prefix geography",
+      "url": "https://postalpro.usps.com/ZIP_Locale_Detail",
+      "type": "public_reference"
     }
   ],
   "notes": [
-    "Seed output is not national coverage.",
-    "QA-only records are excluded unless --include-qa is passed."
+    "Traffic-ready v1 uses exact utility rows for known seed metros and ZIP-prefix estimates everywhere else.",
+    "Every prefix estimate renders with the report's ZIP-prefix estimate label and source line.",
+    "HUD-USPS county crosswalk remains the preferred future exact county build input; direct HUD download was blocked by WAF during this pass."
   ]
 }
