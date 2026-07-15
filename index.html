@@ -771,26 +771,18 @@
           };
           const isLocalHost = ["localhost", "127.0.0.1", ""].includes(window.location.hostname);
 
-          try {
-            const response = await fetch("/api/submit-lead", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json"
-              },
-              body: JSON.stringify(mockLead)
-            });
-
-            if (!response.ok) {
-              throw new Error("Lead endpoint returned " + response.status);
-            }
-          } catch (endpointError) {
+          fetch("/api/submit-lead", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(mockLead)
+          }).catch(() => {
             if (isLocalHost) {
               storeMockLead({
                 ...mockLead,
                 fallback_reason: "submit-lead endpoint unavailable"
               });
             }
-          }
+          });
 
           if (typeof fbq === 'function') {
             fbq('track', 'Lead', { content_name: 'water_hardness_lookup' });
