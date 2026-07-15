@@ -789,8 +789,6 @@
           </section>
         `;
 
-        await new Promise((resolve) => setTimeout(resolve, 600));
-
         if (!/^\d{5}$/.test(zip)) {
           renderError();
           return;
