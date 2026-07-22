@@ -486,12 +486,19 @@
               utmParams[key] = value;
             }
           });
+          const eventId = crypto.randomUUID();
+          const cookies = Object.fromEntries(
+            document.cookie.split('; ').filter(Boolean).map(c => c.split('='))
+          );
           const mockLead = {
             email,
             zip,
             page: window.location.pathname,
             timestamp: new Date().toISOString(),
-            utm_params: utmParams
+            utm_params: utmParams,
+            event_id: eventId,
+            fbp: cookies._fbp || "",
+            fbc: cookies._fbc || ""
           };
           const isLocalHost = ["localhost", "127.0.0.1", ""].includes(window.location.hostname);
 
@@ -511,7 +518,7 @@
           const reportUrl = `/report?zip=${encodeURIComponent(zip)}`;
 
           if (typeof fbq === 'function') {
-            fbq('track', 'Lead', { content_name: 'water_hardness_lookup' });
+            fbq('track', 'Lead', { content_name: 'water_hardness_lookup' }, { eventID: eventId });
             setTimeout(() => { window.location.href = reportUrl; }, 300);
           } else {
             window.location.href = reportUrl;

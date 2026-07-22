@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const crypto = require("crypto");
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const zipPattern = /^\d{5}$/;
@@ -29,6 +30,60 @@ function findHardness(lookup, zip) {
 
 async function syncToEsp(_lead) {
   return { skipped: true, reason: "ESP provider not configured" };
+}
+
+function sha256(value) {
+  return crypto.createHash("sha256").update(value).digest("hex");
+}
+
+function resolveOrigin(req) {
+  const host = req.headers["x-forwarded-host"] || req.headers["host"] || "www.myapartmentwaterquality.com";
+  return `https://${host}`;
+}
+
+async function sendMetaCapi({ lead, eventId, fbp, fbc, req }) {
+  const pixelId = process.env.META_PIXEL_ID;
+  const accessToken = process.env.META_CAPI_ACCESS_TOKEN;
+  if (!pixelId || !accessToken) return;
+
+  const userData = {
+    em: [sha256(lead.email.toLowerCase())],
+    zp: [sha256(lead.zip)],
+    client_ip_address: req.headers["x-forwarded-for"] || req.socket?.remoteAddress || "",
+    client_user_agent: req.headers["user-agent"] || ""
+  };
+  if (fbp) userData.fbp = fbp;
+  if (fbc) userData.fbc = fbc;
+
+  const event = {
+    event_name: "Lead",
+    event_time: Math.floor(Date.now() / 1000),
+    event_id: eventId,
+    action_source: "website",
+    event_source_url: resolveOrigin(req) + (lead.page || "/"),
+    user_data: userData
+  };
+
+  const payload = { data: [event] };
+  const testCode = process.env.META_TEST_EVENT_CODE;
+  if (testCode) payload.test_event_code = testCode;
+
+  try {
+    const response = await fetch(
+      `https://graph.facebook.com/v21.0/${encodeURIComponent(pixelId)}/events?access_token=${encodeURIComponent(accessToken)}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }
+    );
+    if (!response.ok) {
+      const detail = await response.text();
+      console.error(JSON.stringify({ event: "meta_capi_error", status: response.status, detail: detail.slice(0, 500) }));
+    }
+  } catch (err) {
+    console.error(JSON.stringify({ event: "meta_capi_exception", message: err.message }));
+  }
 }
 
 function airtableConfig() {
@@ -179,6 +234,9 @@ module.exports = async function handler(req, res) {
     ? body.utm_params
     : {};
   const page = String(body.page || "").trim();
+  const eventId = String(body.event_id || "");
+  const fbp = String(body.fbp || "");
+  const fbc = String(body.fbc || "");
 
   if (!emailPattern.test(email)) {
     res.status(400).json({ ok: false, error: "invalid_email" });
@@ -235,6 +293,8 @@ module.exports = async function handler(req, res) {
     estimated: lead.hardness_estimated,
     lookup_status: lead.lookup_status
   });
+
+  sendMetaCapi({ lead, eventId, fbp, fbc, req }).catch(() => {});
 };
 
 module.exports._test = {
