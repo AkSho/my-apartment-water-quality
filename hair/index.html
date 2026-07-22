@@ -326,6 +326,7 @@
     src="https://www.facebook.com/tr?id=4190953217702726&ev=PageView&noscript=1"
     /></noscript>
     <!-- End Meta Pixel Code -->
+    <script defer src="/_vercel/insights/script.js"></script>
   </head>
   <body>
     <main class="page">
@@ -488,6 +489,7 @@
           const mockLead = {
             email,
             zip,
+            page: window.location.pathname,
             timestamp: new Date().toISOString(),
             utm_params: utmParams
           };
@@ -506,11 +508,14 @@
             }
           });
 
+          const reportUrl = `/report?zip=${encodeURIComponent(zip)}`;
+
           if (typeof fbq === 'function') {
             fbq('track', 'Lead', { content_name: 'water_hardness_lookup' });
+            setTimeout(() => { window.location.href = reportUrl; }, 300);
+          } else {
+            window.location.href = reportUrl;
           }
-
-          window.location.href = `/report?zip=${encodeURIComponent(zip)}`;
         });
       });
     </script>

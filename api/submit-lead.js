@@ -52,7 +52,7 @@ function airtableFields(lead) {
     utm_content: lead.utm_params.utm_content || "",
     utm_term: lead.utm_params.utm_term || "",
     timestamp: lead.timestamp,
-    source_url: lead.source_url || "",
+    page: lead.page || "",
     lookup_status: lead.lookup_status,
     matched_source: lead.matched_source
   };
@@ -62,7 +62,7 @@ function airtableVisibleFields(lead) {
   return {
     "Email Address": lead.email,
     "Zip Code": lead.zip,
-    "Source/Page": lead.source_url || "MyApartmentWaterQuality.com",
+    "Source/Page": lead.page || "/",
     "Lookup Status": lead.lookup_status,
     "Hardness Band": lead.hardness_band || "",
     "Hardness PPM": lead.hardness_ppm,
@@ -74,7 +74,7 @@ function airtableMinimalVisibleFields(lead) {
   return {
     "Email Address": lead.email,
     "Zip Code": lead.zip,
-    "Source/Page": lead.source_url || "MyApartmentWaterQuality.com"
+    "Source/Page": lead.page || "/"
   };
 }
 
@@ -178,6 +178,7 @@ module.exports = async function handler(req, res) {
   const utmParams = body.utm_params && typeof body.utm_params === "object"
     ? body.utm_params
     : {};
+  const page = String(body.page || "").trim();
 
   if (!emailPattern.test(email)) {
     res.status(400).json({ ok: false, error: "invalid_email" });
@@ -196,10 +197,10 @@ module.exports = async function handler(req, res) {
     zip,
     timestamp,
     utm_params: utmParams,
+    page,
     hardness_ppm: hardness ? hardness.ppm : null,
     hardness_band: hardness ? hardness.band : null,
     hardness_estimated: Boolean(hardness && hardness.estimated),
-    source_url: hardness ? hardness.source_url : "",
     lookup_status: hardness ? (hardness.estimated ? "estimated_match" : "exact_match") : "no_match",
     matched_source: hardness ? hardness.source_label : "No matching report in current lookup coverage"
   };
