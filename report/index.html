@@ -468,7 +468,7 @@
         },
         jid: {
           label: "Journal of Investigative Dermatology hard-water skin study",
-          url: "https://pubmed.ncbi.nlm.nih.gov/?term=hard+water+soap+residue+skin+Journal+of+Investigative+Dermatology"
+          url: "https://www.jidonline.org/article/S0022-202X(17)32938-X/fulltext"
         }
       };
 
@@ -523,12 +523,12 @@
       function scoreLine(record) {
         const ppm = Number(record.ppm);
         if (record.band === "Very hard") {
-          if (ppm <= 200) return "That sits just past the 'very hard' line on the USGS scale.";
-          return `That's ${Math.round(((ppm - 180) / 180) * 100)}% past the threshold where the USGS scale simply stops measuring harder.`;
+          if (ppm <= 200) return "Hardness bands per the U.S. Geological Survey, the federal agency that maps the nation's water. That sits just past the 'very hard' line on the USGS scale.";
+          return `Hardness bands per the U.S. Geological Survey, the federal agency that maps the nation's water. That's ${Math.round(((ppm - 180) / 180) * 100)}% past the point where the USGS scale tops out.`;
         }
-        if (record.band === "Hard") return "That's firmly in the 'hard' band — most of the western and east-central US tests here or higher.";
-        if (record.band === "Moderately hard") return "That's mid-scale: not extreme, but enough to notice on glass, fixtures, and hair.";
-        return "That's genuinely soft water. Your zip is in the minority.";
+        if (record.band === "Hard") return "Hardness bands per the U.S. Geological Survey, the federal agency that maps the nation's water. That's firmly in the 'hard' band.";
+        if (record.band === "Moderately hard") return "Hardness bands per the U.S. Geological Survey, the federal agency that maps the nation's water. That's mid-scale: not extreme, but enough to notice on glass, fixtures, and hair.";
+        return "Hardness bands per the U.S. Geological Survey, the federal agency that maps the nation's water. That's genuinely soft water. Your zip is in the minority.";
       }
 
       function meaningCopy(record) {
@@ -573,10 +573,15 @@
             <span class="section-rule">Sources</span>
             <h2>Where This Number Comes From</h2>
             <ol class="sources-list">
-              <li><a href="${SOURCES.usgs.url}" target="_blank" rel="noopener">${SOURCES.usgs.label}</a></li>
-              <li><a href="${escapeHtml(record.source_url)}" target="_blank" rel="noopener">${escapeHtml(record.source_label)}</a></li>
-              <li><a href="${SOURCES.trichology.url}" target="_blank" rel="noopener">${SOURCES.trichology.label}</a></li>
-              <li><a href="${SOURCES.jid.url}" target="_blank" rel="noopener">${SOURCES.jid.label}</a></li>
+              <li><a href="${SOURCES.usgs.url}" target="_blank" rel="noopener">${SOURCES.usgs.label}</a> — the four-band scale your number is plotted on.</li>
+              <li id="methodology"><strong>How we estimate your zip</strong>
+                <details>
+                  <summary>See methodology</summary>
+                  <p>We map county-level USGS hardness data to zip prefixes, supplementing with utility water-quality records where available. Zips that fall back to prefix-level data are labeled as estimates throughout the report.</p>
+                </details>
+              </li>
+              <li><a href="${SOURCES.trichology.url}" target="_blank" rel="noopener">${SOURCES.trichology.label}</a> — the hair-strength study: strands washed in hard water measured weaker than strands washed in demineralized water.</li>
+              <li><a href="${SOURCES.jid.url}" target="_blank" rel="noopener">${SOURCES.jid.label}</a> — the skin study: hard water left significantly more soap residue on skin after washing.</li>
             </ol>
           </section>
         `;
@@ -612,6 +617,7 @@
                 <img src="../assets/ag-water-softener-product.jpg" alt="AG Softener product.">
               </div>
               <div>
+                ${(record.band === "Very hard" || record.band === "Hard") ? '<p>At ' + record.ppm + ' mg/L, your water is in the range both studies above were measuring. This is the category of fix that number calls for.</p>' : ''}
                 <h3>AG Softener is a portable shower water softener built for renters.</h3>
                 <p>Real ion-exchange softening — the whole-house technology, sized for a shower — installs in about ten minutes without a plumber, and comes down just as fast when you move.</p>
                 <div class="fact-rows">
@@ -642,7 +648,7 @@
       }
 
       function renderKnown(record) {
-        const estimateLabel = record.estimated ? '<p class="label-chip">Estimated from ZIP-prefix data</p>' : '';
+        const estimateLabel = record.estimated ? '<p class="label-chip"><a href="#methodology" style="color:inherit;text-decoration:none">Estimated from ZIP-prefix data</a></p>' : '';
         const qaLabel = record.qa_only ? '<p class="label-chip">QA-only sample</p>' : '';
         reportMeta.innerHTML = `
           <span>Zip: ${escapeHtml(record.zip)}</span>
@@ -662,13 +668,13 @@
                 <div>
                   ${estimateLabel}
                   ${qaLabel}
-                  <h2>${escapeHtml(record.city_or_county)} shower water</h2>
+                  <h2>${escapeHtml(record.estimated ? record.city_or_county.replace(/ ZIP-prefix estimate$/, '') : record.city_or_county)} shower water</h2>
                   <p>${scoreLine(record)}</p>
                 </div>
               </div>
               ${gaugeHtml(record)}
             </div>
-            <p class="source-line">Source: ${escapeHtml(record.source_label)}. ${record.estimated ? "Estimated from ZIP-prefix data. " : ""}Every displayed number in this report carries its source.</p>
+            <p class="source-line">${record.estimated ? 'Estimated — method under <a href="#methodology">"How we estimate your zip"</a> below.' : 'Source: ' + escapeHtml(record.source_label) + '. Every displayed number in this report carries its source.'}</p>
           </section>
           <section>
             <span class="section-rule">Hair and skin meaning</span>
