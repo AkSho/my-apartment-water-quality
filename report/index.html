@@ -462,9 +462,9 @@
           label: "USGS water hardness classification",
           url: "https://www.usgs.gov/special-topics/water-science-school/science/hardness-water"
         },
-        trichology: {
-          label: "International Journal of Trichology hard-water hair study",
-          url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC3927171/"
+        ijd_hair: {
+          label: "International Journal of Dermatology hard-water hair study",
+          url: "https://pubmed.ncbi.nlm.nih.gov/26711619/"
         },
         jid: {
           label: "Journal of Investigative Dermatology hard-water skin study",
@@ -541,14 +541,14 @@
         if (record.band === "Moderately hard") {
           return `
             <p>Water in the moderately hard range carries enough dissolved calcium and magnesium to leave a film behind slowly. On glass and fixtures, that can show up as spots and light buildup. On hair and skin, the effect is subtler than very hard water, but still real enough for some people to notice: hair that feels coated faster than expected, skin that feels a little tight after washing, and a travel contrast that is there but not dramatic.</p>
-            <p>Research backs the pattern. A study in the <em>International Journal of Trichology</em> measured reduced tensile strength in hair washed repeatedly in hard water, and researchers in the <em>Journal of Investigative Dermatology</em> found hard water leaves significantly more soap residue on skin after washing. Both are linked below.</p>
+            <p>Research backs the pattern. An electron-microscope study in the <em>International Journal of Dermatology</em> found heavier mineral deposits and a rougher, thinner strand after thirty days of hard-water washing, and researchers in the <em>Journal of Investigative Dermatology</em> found hard water leaves significantly more soap residue on skin after washing. Both are linked below.</p>
           `;
         }
 
         const bandWord = record.band.toLowerCase();
         return `
           <p>Water in the ${bandWord} range carries enough dissolved calcium and magnesium that every rinse leaves a thin mineral film behind. On your shower door, that film builds into the white crust you can see. On hair, it builds into a coating you can feel: strands that seem dry no matter how much conditioner they drink, frizz that ignores product, and waves or curls that fall flat by day two. On skin, the minerals react with soap and keep it from rinsing away fully, which is the tight, squeaky feeling after you towel off.</p>
-          <p>Research backs the pattern. A study in the <em>International Journal of Trichology</em> measured reduced tensile strength in hair washed repeatedly in hard water — strands become weaker and rougher. And researchers in the <em>Journal of Investigative Dermatology</em> found hard water leaves significantly more soap residue on skin after washing, drawing moisture out through the skin barrier. Both are linked below.</p>
+          <p>Research backs the pattern. An electron-microscope study in the <em>International Journal of Dermatology</em> found heavier mineral deposits and a rougher, thinner strand after thirty days of hard-water washing. And researchers in the <em>Journal of Investigative Dermatology</em> found hard water leaves significantly more soap residue on skin after washing, drawing moisture out through the skin barrier. Both are linked below.</p>
           <p>If your hair or skin behaves noticeably better when you travel, this is the mechanism. It was never your products.</p>
         `;
       }
@@ -580,7 +580,7 @@
                   <p>We map county-level USGS hardness data to zip prefixes, supplementing with utility water-quality records where available. Zips that fall back to prefix-level data are labeled as estimates throughout the report.</p>
                 </details>
               </li>
-              <li><a href="${SOURCES.trichology.url}" target="_blank" rel="noopener">${SOURCES.trichology.label}</a> — the hair-strength study: strands washed in hard water measured weaker than strands washed in demineralized water.</li>
+              <li><a href="${SOURCES.ijd_hair.url}" target="_blank" rel="noopener">${SOURCES.ijd_hair.label}</a> — mineral deposits measured on the strand surface under an electron microscope after thirty days of hard-water washing.</li>
               <li><a href="${SOURCES.jid.url}" target="_blank" rel="noopener">${SOURCES.jid.label}</a> — the skin study: hard water left significantly more soap residue on skin after washing.</li>
             </ol>
           </section>
