@@ -14,5 +14,7 @@ Proper 1200x630 branded OG images are a pending design deliverable.
 
 ## Where to update once ready
 - PDP: `src/routes/__root.tsx` — `og:image` meta property
+- /shower-filter-vs-water-softener: `src/routes/shower-filter-vs-water-softener.tsx` — `og:image` meta
+- /do-shower-filters-work-for-hard-water: `src/routes/do-shower-filters-work-for-hard-water.tsx` — `og:image` meta
 - Water tool homepage: `index.html` — `og:image` meta property
 - Water tool /hair: `hair/index.html` — `og:image` meta property
