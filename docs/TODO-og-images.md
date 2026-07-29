@@ -19,5 +19,7 @@ Proper 1200x630 branded OG images are a pending design deliverable.
 - /water-softener-for-apartment: `src/routes/water-softener-for-apartment.tsx` — `og:image` meta
 - /portable-water-softener-for-shower: `src/routes/portable-water-softener-for-shower.tsx` — `og:image` meta
 - /shower-head-water-softener: `src/routes/shower-head-water-softener.tsx` — `og:image` meta
+- /jolie-alternative-for-hard-water: `src/routes/jolie-alternative-for-hard-water.tsx` — `og:image` meta
+- /showerstick-alternative: `src/routes/showerstick-alternative.tsx` — `og:image` meta
 - Water tool homepage: `index.html` — `og:image` meta property
 - Water tool /hair: `hair/index.html` — `og:image` meta property
