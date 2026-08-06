@@ -1,0 +1,9 @@
+# MyApartmentWaterQuality.com
+
+A free water hardness lookup tool. Enter a zip code to see whether your apartment or home has hard water, with the hardness level in ppm, the USGS band, and what that means for your hair and skin. Data sourced from public USGS and utility records.
+
+## Pages
+
+- [How hard is your shower water?](https://www.myapartmentwaterquality.com/): homepage with zip code lookup form
+- [Is hard water damaging your hair and skin?](https://www.myapartmentwaterquality.com/hair): explains how hard water affects hair and skin, with research citations
+- Water hardness report: enter any US zip code at the homepage to generate a per-zip report showing hardness in ppm, the USGS band, sourcing, and what the number means
