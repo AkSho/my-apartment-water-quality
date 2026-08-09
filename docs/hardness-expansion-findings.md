@@ -1,154 +1,105 @@
 # Water Hardness Dataset Expansion: Wave 1 Findings
 
-**Date**: 2026-08-06
-**Status**: Partial — infrastructure delivered, manual data extraction required
+**Date**: 2026-08-08
+**Status**: Wave 1 in progress — 12 verified, 8 pending manual review
 
 ## Coverage
 
 | Category | Count |
 |----------|-------|
-| Target systems (wave 1) | 50 |
-| Verified from web (hardness value confirmed) | 2 |
-| Existing records pending re-verification | 3 (Chicago, Las Vegas, Portland) |
-| Existing records re-verified | 1 (Austin: 93 ppm confirmed) |
-| Awaiting manual PDF extraction | 44 |
+| Target systems (wave 1) | 20 |
+| Verified (hardness value from primary source) | 12 |
+| No public number (CCR exists but no hardness figure) | 1 (Miami-Dade) |
+| Pending manual PDF review | 7 |
 
 ## Verified records
 
-| City | Utility | Hardness (ppm) | Band | Source |
-|------|---------|---------------|------|--------|
-| Austin, TX | Austin Water | 93 avg (70-126 range) | Moderately hard | 2025 CCR, austintexas.gov |
-| San Diego, CA | San Diego PUD | 274 (16 gpg avg, range 16-18 gpg) | Very hard | sandiego.gov/public-utilities |
+| City | Utility | Hardness (ppm) | Range | Band | Source type |
+|------|---------|---------------|-------|------|------------|
+| San Antonio, TX | SAWS | 299 (midpoint) | 257-342 (15-20 gpg) | Very hard | FAQ page |
+| Indianapolis, IN | Citizens Water | 317 avg | 148-460 | Very hard | Quality page |
+| Las Vegas, NV | LVVWD | 280 | single value | Very hard | CCR PDF |
+| San Diego, CA | San Diego PUD | 276 | 276-308 (16-18 gpg) | Very hard | Quality page |
+| Tampa, FL | Tampa Water | 185 avg | 140-300 | Very hard | CCR PDF + FAQ |
+| Wichita, KS | Wichita Water | 170 | single value | Hard | CCR PDF |
+| Dayton, OH | City of Dayton | 155 (treated) | raw: 320 | Hard | FAQ page |
+| Louisville, KY | Louisville Water | 128 | single value | Hard | CCR PDF |
+| Austin, TX | Austin Water | 93 avg | 70-126 | Moderately hard | CCR inline HTML |
+| Denver, CO | Denver Water | 89 avg | 48-116 | Moderately hard | CCR PDF |
+| New York, NY | NYC DEP | 25 avg | 16-90 | Soft | CCR PDF |
+| Portland, OR | Portland Water Bureau | 9 (midpoint) | 7-11 | Soft | Quality report page |
 
-## Existing records requiring re-verification
+## Re-verification of existing 4 records
 
-| City | Current value | Status | Action |
-|------|--------------|--------|--------|
-| Chicago, IL | 148 ppm | CCR landing page accessible; data in PDF | Open PDF from chicago.gov CCR page |
-| Las Vegas, NV | 280 ppm | CCR landing page accessible; data in linked reports | Open reports from lvvwd.com |
-| Portland, OR | 7 ppm | CCR page returned 404 | Try portland.gov/water direct or Google "Portland Water Bureau CCR 2025" |
+| City | Old value | New value | Status |
+|------|-----------|-----------|--------|
+| Austin, TX | 93 ppm | 93 ppm | CONFIRMED |
+| Las Vegas, NV | 280 ppm | 280 ppm | CONFIRMED |
+| Portland, OR | 7 ppm | 7-11 ppm (midpoint 9) | DISCREPANCY: old record used range minimum. Update to 9 ppm with range. |
+| Chicago, IL | 148 ppm | Not yet verified | CCR PDF has image-based tables. Manual review pending. |
 
-## Why automated extraction failed
+## Spot-check results (5 of 12 re-verified)
 
-Most US water utilities publish hardness data exclusively in PDF Consumer Confidence Reports. Of 30+ URLs attempted:
+| Record | Re-fetched value | Match |
+|--------|-----------------|-------|
+| SAWS (FAQ) | 15-20 gpg | PASS |
+| Indianapolis (quality page) | 317 ppm / 19 gpg | PASS |
+| San Diego (quality page) | 276 ppm / 16 gpg | PASS (updated from 274 to match utility's stated ppm) |
+| Tampa (FAQ) | 140-300 ppm | PASS |
+| Dayton (FAQ) | 155 mg/L / 9 gpg | PASS |
 
-- **~20 returned 403/404/SSL errors** (municipal sites blocking automated requests or broken URLs)
-- **~8 returned landing pages** that link to PDF CCRs but don't contain hardness data inline
-- **2 returned usable inline data** (Austin, San Diego)
-- **0 PDF CCRs could be read** (WebFetch cannot process PDFs)
+## URL rot log
 
-This is not a tooling bug — it's how the industry works. CCRs are annual PDF documents mailed to customers and posted online as PDF downloads.
+Of ~35 guessed CCR PDF URLs attempted:
+- **~28 (80%) returned 404** — stale or incorrectly guessed paths
+- **~4 returned valid PDFs** from guessed patterns (NYC, Louisville, Tampa, Wichita)
+- **~3 returned HTML error pages** masquerading as PDFs (Chicago non-CCR, Lubbock, El Paso)
 
-## Source URL inventory for manual extraction
+WebSearch discovery found live URLs for most systems. The lesson: utility PDF paths are not predictable year-to-year; discovery must precede fetch.
 
-The fastest path: open each URL below in a browser, find the most recent CCR (usually a PDF link), Ctrl+F for "hardness" or "hard" in the PDF, and record the value.
+For maintenance: re-run discovery annually after CCR publication season (typically May-July).
 
-### Priority 1: Known hard/very hard metros (highest value for the product)
+## Systems pending manual review (7)
 
-| City | Utility | CCR URL | Expected band |
-|------|---------|---------|--------------|
-| Phoenix, AZ | City of Phoenix Water Services | phoenix.gov/waterservices/water-quality | Very hard |
-| San Antonio, TX | SAWS | saws.org/your-water/water-quality/water-quality-report/ | Very hard |
-| Tucson, AZ | Tucson Water | tucsonaz.gov/water/water-quality | Very hard |
-| Indianapolis, IN | Citizens Energy Group | citizensenergygroup.com/Water-Quality | Very hard |
-| Las Vegas, NV | LVVWD | lvvwd.com/water-quality/reports/ | Very hard (verify 280) |
-| Salt Lake City, UT | SLC DPU | slc.gov/utilities/water-quality/ | Hard/Very hard |
-| Dayton, OH | City of Dayton | daytonohio.gov/259/Water-Quality-Reports | Very hard |
-| Lubbock, TX | City of Lubbock | mylubbock.us/water | Very hard |
-| El Paso, TX | El Paso Water | epwater.org/our-water/water-quality | Very hard |
-| Wichita, KS | City of Wichita | wichita.gov/PublicWorks/WaterUtilities | Very hard |
-| Tampa, FL | City of Tampa | tampa.gov/water/water-quality | Hard |
-| Miami, FL | Miami-Dade WASD | miamidade.gov/water/water-quality.asp | Hard |
-| Dallas, TX | Dallas Water Utilities | dallascityhall.com/departments/waterutilities | Hard |
-| Houston, TX | City of Houston | houstontx.gov/water/waterquality.html | Hard |
-| Bakersfield, CA | Cal Water | calwater.com/water-quality/ | Hard |
-| Fresno, CA | City of Fresno | fresno.gov/publicutilities/water-quality/ | Hard |
+| City | Utility | What to do |
+|------|---------|-----------|
+| Chicago, IL | Chicago DWM | Open 2024 CCR PDF (55MB) at chicago.gov; Ctrl+F "hardness" in data table. Image-based tables prevented automated extraction. |
+| Phoenix, AZ | Phoenix Water Services | Open taste/odor/hardness FAQ PDF at phoenix.gov/waterservicessite/documents/taste_odor_and_hardnessfaqs.pdf or the annual Water Quality Report. |
+| Tucson, AZ | Tucson Water | Open 2024 CCR at tucsonaz.gov. Known hard to very hard. |
+| Salt Lake City, UT | SLC DPU | Open 2026 CCR at slc.gov. Well water at 535 ppm but need system-wide number. |
+| Lubbock, TX | City of Lubbock | Open CCR at ci.lubbock.tx.us. Search snippets suggest 169 ppm avg but unverified. |
+| El Paso, TX | El Paso Water | Open Drinking Water Report at epwater.org. FAQ says "moderately hard to hard." |
+| Oklahoma City, OK | OKC Utilities | Open CCR at okc.gov/ccr. |
 
-### Priority 2: Large metros (coverage completeness)
+## No-public-number systems (1)
 
-| City | Utility | CCR URL |
-|------|---------|---------|
-| New York, NY | NYC DEP | nyc.gov/site/dep/water/drinking-water-quality-report.page |
-| Los Angeles, CA | LADWP | ladwp.com/water-quality |
-| Chicago, IL | Chicago DWM | chicago.gov/city/en/depts/water/supp_info/water_quality_resultsandreports.html |
-| Washington, DC | DC Water | dcwater.com/water-quality |
-| Philadelphia, PA | Philadelphia Water | water.phila.gov/pool/files/annual-report.pdf |
-| Atlanta, GA | Atlanta Watershed | atlantawatershed.org/drinking-water/water-quality-report/ |
-| Boston, MA | MWRA | mwra.com/water/html/awqr.htm |
-| San Francisco, CA | SFPUC | sfpuc.gov/drinking-water/water-quality |
-| Riverside, CA | Riverside PU | riversideca.gov/utilities/water-quality |
-| Detroit, MI | GLWA | glwater.org/water-quality/ |
-| Seattle, WA | Seattle PU | seattle.gov/utilities/your-services/water/water-quality |
-| Minneapolis, MN | Minneapolis Water | minneapolismn.gov/government/departments/public-works/water-treatment/ |
-| Denver, CO | Denver Water | denverwater.org/your-water/water-quality |
-| St. Louis, MO | City of St. Louis | stlwater.com/water-quality/ |
-| Baltimore, MD | Baltimore DPW | publicworks.baltimorecity.gov/water-quality |
-| Orlando, FL | OUC | ouc.com/water-quality |
-| Charlotte, NC | Charlotte Water | charlottenc.gov/Water/WaterQuality/ |
-| Portland, OR | Portland Water Bureau | portland.gov/water/water-quality/water-quality-reports |
-| Columbus, OH | Columbus Div. of Water | columbus.gov/utilities/water-quality/ |
-| Nashville, TN | Metro Water Services | nashville.gov/departments/water-services/water-quality |
-| Jacksonville, FL | JEA | jea.com/water-quality |
-| Sacramento, CA | City of Sacramento | cityofsacramento.gov/utilities/water/water-quality |
-| Kansas City, MO | KC Water | kcwater.us/water-quality/ |
-| Cincinnati, OH | GCWW | cincinnati-oh.gov/water/water-quality/ |
-| Milwaukee, WI | Milwaukee Water Works | city.milwaukee.gov/water/WaterQuality |
-| Raleigh, NC | City of Raleigh | raleighnc.gov/water-and-sewer/water-quality |
-| Pittsburgh, PA | PWSA | pgh2o.com/water-quality |
-| Cleveland, OH | Cleveland Water | clevelandwater.com/water-quality |
-| Oklahoma City, OK | OKC Utilities | okc.gov/departments/utilities/water-quality |
-| Louisville, KY | Louisville Water | louisvillewater.com/water-quality (PDF: LW-CCR-2025-Report-Final.pdf) |
-| Memphis, TN | MLGW | mlgw.com/residential/waterquality |
+| City | Utility | Notes |
+|------|---------|-------|
+| Miami, FL | Miami-Dade WASD | CCR mentions lime treatment to reduce hardness but publishes no hardness number. Upgrade if a utility FAQ page with the number surfaces. |
 
-## Schema
+## Preliminary hardest-25 ranking (sourced records only)
 
-Records stored in `data/metro-hardness.json`. Schema per system:
+| Rank | City | ppm | Band | Source |
+|------|------|-----|------|--------|
+| 1 | San Antonio, TX | 299 (midpoint 15-20 gpg) | Very hard | SAWS FAQ |
+| 2 | Indianapolis, IN | 317 avg | Very hard | Citizens Water quality page |
+| 3 | Las Vegas, NV | 280 | Very hard | LVVWD CCR PDF |
+| 4 | San Diego, CA | 276 | Very hard | San Diego PUD quality page |
+| 5 | Tampa, FL | 185 avg | Very hard | Tampa CCR PDF |
+| 6 | Wichita, KS | 170 | Hard | Wichita CCR PDF |
+| 7 | Dayton, OH | 155 (treated) | Hard | Dayton FAQ |
+| 8 | Louisville, KY | 128 | Hard | Louisville CCR PDF |
 
-```
-system_id, utility_name, city, state, metro,
-zips_served[], hardness_value_original, unit_original,
-hardness_ppm (or ppm_min/ppm_max for ranges),
-band, band_note, source_url, source_year,
-retrieved_date, confidence, notes
-```
+Remaining 17 positions pending data from Phoenix, Tucson, SLC, Lubbock, El Paso, OKC, and wave 2 metros.
 
-Band assignment: midpoint for ranges; flagged when midpoint is within 10 ppm of a band boundary or range spans bands.
+## City vs zip recommendation (unchanged from initial memo)
 
-## Preliminary recommendation: city vs zip as programmatic unit
-
-**Recommendation: city/system as primary, zips as lookup index.**
-
-Rationale from what the data actually shows:
-1. Most utilities serve dozens of zips but publish one hardness number per system. The natural content unit is the system, not the zip.
-2. Many zips are served by multiple systems (especially in metro fringes). Assigning a single number per zip requires dominance logic that adds fragility.
-3. A `/water-hardness/phoenix-az` page with "Phoenix Water Services reports 285 ppm" is a stronger, more citable page than `/report/85001` with the same number.
-4. Zip lookup remains valuable as a routing layer: user enters zip → we map it to the serving system → we show the system-level page or data.
-
-The schema supports both: `zips_served[]` on each system record enables zip-to-system lookup, while the system is the entity with the sourced hardness number.
-
-**Hold the URL strategy decision** until the dataset has 50+ verified records — the zip-mapping quality will determine whether zip-level pages add value or just create near-duplicates.
-
-## Hardest-25 metros (draft, from 2 verified + known-hard expectations)
-
-Cannot produce a sourced ranking from only 2 verified records. Once manual extraction fills in the priority-1 metros above, the ranking will populate naturally from the dataset. The expected top contenders based on USGS regional data and utility reputation:
-
-1. Las Vegas, NV (existing record: 280 ppm, pending re-verification)
-2. San Diego, CA (verified: 274 ppm)
-3. Phoenix, AZ (expected >250 ppm)
-4. Tucson, AZ (expected >200 ppm)
-5. San Antonio, TX (expected >200 ppm, Edwards Aquifer limestone)
-6. Indianapolis, IN (expected >200 ppm)
-7. Lubbock, TX (expected >200 ppm, Ogallala Aquifer)
-8. El Paso, TX (expected >200 ppm)
-9. Wichita, KS (expected >200 ppm)
-10. Dayton, OH (expected >200 ppm, Great Miami Aquifer)
-
-Remaining 15 positions pending data. These "expected" values are directional from USGS geology — they must be replaced with utility CCR numbers before publication.
+**City/system as primary, zips as lookup index.** The data confirms: utilities publish one number per system serving dozens of zips. See initial memo for full rationale.
 
 ## Next steps
 
-1. **Manual extraction** (owner task): open priority-1 CCR PDFs, extract hardness values, add to `data/metro-hardness.json` verified records
-2. **Spot-check**: after 50 records filled, re-open 10 random source URLs and confirm match
-3. **Zip mapping**: use EPA SDWIS service area data to populate `zips_served[]` for verified records
-4. **Wave 2**: expand to remaining metros (100-150 more systems)
-5. **Integration**: update `hardness-lookup.json` with verified records (separate task, after dataset is reviewed)
+1. **Manual extraction** for the 7 pending systems (owner task: ~30 min total)
+2. **Chicago re-verification** (determines whether existing 148 ppm record needs updating)
+3. **Portland record update**: change from 7 ppm to 9 ppm with range 7-11 (live report still shows old value)
+4. **Wave 2**: remaining metros from the original 50 list + additional known-hard metros
+5. **Zip mapping** via EPA SDWIS service area data (after 50+ verified records)
