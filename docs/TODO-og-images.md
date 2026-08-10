@@ -21,5 +21,6 @@ Proper 1200x630 branded OG images are a pending design deliverable.
 - /shower-head-water-softener: `src/routes/shower-head-water-softener.tsx` — `og:image` meta
 - /jolie-alternative-for-hard-water: `src/routes/jolie-alternative-for-hard-water.tsx` — `og:image` meta
 - /showerstick-alternative: `src/routes/showerstick-alternative.tsx` — `og:image` meta
+- /arius-vs-ag-water-softener: `src/routes/arius-vs-ag-water-softener.tsx` — `og:image` meta
 - Water tool homepage: `index.html` — `og:image` meta property
 - Water tool /hair: `hair/index.html` — `og:image` meta property
