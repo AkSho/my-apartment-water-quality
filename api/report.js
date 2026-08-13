@@ -18,10 +18,12 @@ function findHardness(lookup, zip) {
 
   if (!prefix) return null;
 
+  const prefixRecord = prefixes[prefix];
   return {
     zip,
-    ...prefixes[prefix],
-    estimated: true
+    ...prefixRecord,
+    estimated: !prefixRecord.verified,
+    verified_prefix: !!prefixRecord.verified
   };
 }
 
