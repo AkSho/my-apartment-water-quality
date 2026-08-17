@@ -1,9 +1,54 @@
-# MyApartmentWaterQuality.com
+# My Apartment Water Quality
 
-A free water hardness lookup tool. Enter a zip code to see whether your apartment or home has hard water, with the hardness level in ppm, the USGS band, and what that means for your hair and skin. Data sourced from public USGS and utility records.
+> Free lookup of water hardness for US apartments and condos by zip code. Reports use utility and municipal data, with verified readings marked separately from estimates.
 
-## Pages
+## Tool
 
-- [How hard is your shower water?](https://www.myapartmentwaterquality.com/): homepage with zip code lookup form
-- [Is hard water damaging your hair and skin?](https://www.myapartmentwaterquality.com/hair): explains how hard water affects hair and skin, with research citations
-- Water hardness report: enter any US zip code at the homepage to generate a per-zip report showing hardness in ppm, the USGS band, sourcing, and what the number means
+- [Water hardness lookup](https://www.myapartmentwaterquality.com/): enter a zip code, get a hardness report for that area
+
+## City and utility reports
+
+- [Indianapolis, IN](https://www.myapartmentwaterquality.com/water-hardness/indianapolis-in)
+- [San Jose, CA](https://www.myapartmentwaterquality.com/water-hardness/san-jose-ca)
+- [Madison, WI](https://www.myapartmentwaterquality.com/water-hardness/madison-wi)
+- [San Antonio, TX](https://www.myapartmentwaterquality.com/water-hardness/san-antonio-tx)
+- [Mesa, AZ](https://www.myapartmentwaterquality.com/water-hardness/mesa-az)
+- [Las Vegas, NV](https://www.myapartmentwaterquality.com/water-hardness/las-vegas-nv)
+- [San Diego, CA](https://www.myapartmentwaterquality.com/water-hardness/san-diego-ca)
+- [Scottsdale, AZ](https://www.myapartmentwaterquality.com/water-hardness/scottsdale-az)
+- [Jacksonville, FL](https://www.myapartmentwaterquality.com/water-hardness/jacksonville-fl)
+- [Phoenix, AZ](https://www.myapartmentwaterquality.com/water-hardness/phoenix-az)
+- [Tampa, FL](https://www.myapartmentwaterquality.com/water-hardness/tampa-fl)
+- [El Paso, TX](https://www.myapartmentwaterquality.com/water-hardness/el-paso-tx)
+- [Wichita, KS](https://www.myapartmentwaterquality.com/water-hardness/wichita-ks)
+- [Omaha, NE](https://www.myapartmentwaterquality.com/water-hardness/omaha-ne)
+- [Dayton, OH](https://www.myapartmentwaterquality.com/water-hardness/dayton-oh)
+- [Des Moines, IA](https://www.myapartmentwaterquality.com/water-hardness/des-moines-ia)
+- [Cincinnati, OH](https://www.myapartmentwaterquality.com/water-hardness/cincinnati-oh)
+- [Chicago, IL](https://www.myapartmentwaterquality.com/water-hardness/chicago-il)
+- [Beavercreek, OH](https://www.myapartmentwaterquality.com/water-hardness/beavercreek-oh)
+- [Milwaukee, WI](https://www.myapartmentwaterquality.com/water-hardness/milwaukee-wi)
+- [Fresno, CA](https://www.myapartmentwaterquality.com/water-hardness/fresno-ca)
+- [Orlando, FL](https://www.myapartmentwaterquality.com/water-hardness/orlando-fl)
+- [Louisville, KY](https://www.myapartmentwaterquality.com/water-hardness/louisville-ky)
+- [Columbus, OH](https://www.myapartmentwaterquality.com/water-hardness/columbus-oh)
+- [Cleveland, OH](https://www.myapartmentwaterquality.com/water-hardness/cleveland-oh)
+- [Albuquerque, NM](https://www.myapartmentwaterquality.com/water-hardness/albuquerque-nm)
+- [Tulsa, OK](https://www.myapartmentwaterquality.com/water-hardness/tulsa-ok)
+- [Minneapolis, MN](https://www.myapartmentwaterquality.com/water-hardness/minneapolis-mn)
+- [Kansas City, MO](https://www.myapartmentwaterquality.com/water-hardness/kansas-city-mo)
+- [Washington, DC](https://www.myapartmentwaterquality.com/water-hardness/washington-dc)
+- [Austin, TX](https://www.myapartmentwaterquality.com/water-hardness/austin-tx)
+- [Saint Paul, MN](https://www.myapartmentwaterquality.com/water-hardness/saint-paul-mn)
+- [Denver, CO](https://www.myapartmentwaterquality.com/water-hardness/denver-co)
+- [Sacramento, CA](https://www.myapartmentwaterquality.com/water-hardness/sacramento-ca)
+- [Nashville, TN](https://www.myapartmentwaterquality.com/water-hardness/nashville-tn)
+- [Memphis, TN](https://www.myapartmentwaterquality.com/water-hardness/memphis-tn)
+- [Raleigh, NC](https://www.myapartmentwaterquality.com/water-hardness/raleigh-nc)
+- [Charlotte, NC](https://www.myapartmentwaterquality.com/water-hardness/charlotte-nc)
+- [New York, NY](https://www.myapartmentwaterquality.com/water-hardness/new-york-ny)
+- [Portland, OR](https://www.myapartmentwaterquality.com/water-hardness/portland-or)
+
+## Related reading
+
+- [Hard water and hair](https://www.myapartmentwaterquality.com/hair): what hardness minerals do to hair, with sources
