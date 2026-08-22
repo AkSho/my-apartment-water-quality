@@ -36,9 +36,8 @@ function sha256(value) {
   return crypto.createHash("sha256").update(value).digest("hex");
 }
 
-function resolveOrigin(req) {
-  const host = req.headers["x-forwarded-host"] || req.headers["host"] || "www.myapartmentwaterquality.com";
-  return `https://${host}`;
+function resolveOrigin(_req) {
+  return "https://www.myapartmentwaterquality.com";
 }
 
 async function sendMetaCapi({ lead, eventId, fbp, fbc, req }) {
@@ -226,7 +225,19 @@ module.exports = async function handler(req, res) {
     return;
   }
 
+  const origin = req.headers["origin"] || "";
+  if (origin && origin !== "https://www.myapartmentwaterquality.com") {
+    res.status(403).json({ ok: false, error: "forbidden" });
+    return;
+  }
+
   const body = req.body || {};
+
+  if (body.website) {
+    res.status(200).json({ ok: true, lead_id: "ok" });
+    return;
+  }
+
   const email = String(body.email || "").trim();
   const zip = String(body.zip || "").trim();
   const timestamp = body.timestamp || new Date().toISOString();
@@ -278,8 +289,7 @@ module.exports = async function handler(req, res) {
     }));
     res.status(502).json({
       ok: false,
-      error: airtable.error,
-      missing: airtable.missing
+      error: "storage_error"
     });
     return;
   }

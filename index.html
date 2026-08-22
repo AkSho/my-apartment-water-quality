@@ -546,6 +546,7 @@
           max-width: 400px;
         }
       }
+      .lookup-form .hp-field { position: absolute; left: -9999px; opacity: 0; height: 0; width: 0; overflow: hidden; }
     </style>
     <!-- Meta Pixel Code (suppressed for internal traffic) -->
     <script>
@@ -639,6 +640,7 @@
               Email
               <input name="email" type="email" autocomplete="email" placeholder="Your email" required>
             </label>
+            <div class="hp-field" aria-hidden="true"><label>Website<input name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
             <p class="form-error" role="alert"></p>
             <button type="submit">SHOW MY WATER SCORE</button>
             <p class="microcopy">Your full report appears right away, and you can download a copy to keep.</p>
@@ -731,6 +733,7 @@
               Email
               <input name="email" type="email" autocomplete="email" placeholder="Your email" required>
             </label>
+            <div class="hp-field" aria-hidden="true"><label>Website<input name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
             <p class="form-error" role="alert"></p>
             <button type="submit">GET MY FREE WATER SCORE</button>
             <p class="microcopy">Instant full report on screen, yours to download. Free either way.</p>
@@ -774,6 +777,11 @@
       forms.forEach((form) => {
         form.addEventListener("submit", async (event) => {
           event.preventDefault();
+
+          if (form.elements.website && form.elements.website.value) {
+            window.location.href = "/report?zip=" + encodeURIComponent(form.elements.zip.value.trim());
+            return;
+          }
 
           const zipInput = form.elements.zip;
           const emailInput = form.elements.email;
