@@ -29,11 +29,11 @@
     },
     "89101": {
       "zip": "89101",
-      "ppm": 280,
+      "ppm": 291,
       "band": "Very hard",
       "city_or_county": "Las Vegas, NV",
       "source_label": "Las Vegas Valley Water District water quality reporting",
-      "source_url": "https://www.lvvwd.com/water-quality/reports/index.html"
+      "source_url": "https://www.lvvwd.com/water-quality/facts/index.html"
     },
     "97205": {
       "zip": "97205",
@@ -1102,7 +1102,7 @@
       "verified": true
     },
     "891": {
-      "ppm": 280,
+      "ppm": 291,
       "band": "Very hard",
       "city_or_county": "Las Vegas, NV",
       "utility_name": "Las Vegas Valley Water District",

@@ -81,11 +81,11 @@
       "city": "Las Vegas",
       "state": "NV",
       "utility_name": "Las Vegas Valley Water District",
-      "display_ppm": 280,
+      "display_ppm": 291,
       "ppm_min": null,
       "ppm_max": null,
       "band": "Very hard",
-      "source_url": "https://www.lvvwd.com/assets/pdf/water-quality-report-las-vegas-valley-current.pdf",
+      "source_url": "https://www.lvvwd.com/water-quality/facts/index.html",
       "source_year": "2026",
       "confidence": "exact",
       "treatment_note": null
