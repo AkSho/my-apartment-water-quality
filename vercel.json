@@ -1,9 +1,8 @@
 {
+  "trailingSlash": false,
   "rewrites": [
     { "source": "/report", "destination": "/api/report" },
-    { "source": "/report/", "destination": "/api/report" },
     { "source": "/water-hardness", "destination": "/api/water-hardness" },
-    { "source": "/water-hardness/", "destination": "/api/water-hardness" },
     { "source": "/water-hardness/:slug", "destination": "/api/water-hardness?slug=:slug" }
   ]
 }
