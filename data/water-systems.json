@@ -60,7 +60,8 @@
       "source_url": "https://www.saws.org/your-water/water-quality/saws-water-quality-concerns/faqs/",
       "source_year": "2025",
       "confidence": "exact",
-      "treatment_note": "Edwards/Trinity Aquifer limestone source."
+      "treatment_note": "Edwards/Trinity Aquifer limestone source.",
+      "verified_date": "2026-08-23"
     },
     {
       "slug": "mesa-az",
@@ -88,7 +89,8 @@
       "source_url": "https://www.lvvwd.com/water-quality/facts/index.html",
       "source_year": "2026",
       "confidence": "exact",
-      "treatment_note": null
+      "treatment_note": null,
+      "verified_date": "2026-08-21"
     },
     {
       "slug": "san-diego-ca",
@@ -102,7 +104,8 @@
       "source_url": "https://www.sandiego.gov/public-utilities/water-quality",
       "source_year": "2025",
       "confidence": "exact",
-      "treatment_note": null
+      "treatment_note": null,
+      "verified_date": "2026-08-23"
     },
     {
       "slug": "scottsdale-az",
@@ -130,7 +133,8 @@
       "source_url": "https://www.jea.com/about/water_supply/water_hardness_levels/",
       "source_year": "2025",
       "confidence": "exact",
-      "treatment_note": "Floridan Aquifer groundwater source."
+      "treatment_note": "Floridan Aquifer groundwater source.",
+      "verified_date": "2026-08-23"
     },
     {
       "slug": "phoenix-az",
