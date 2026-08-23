@@ -5,7 +5,8 @@
     { "source": "/water-hardness", "destination": "/api/water-hardness" },
     { "source": "/water-hardness/:slug", "destination": "/api/water-hardness?slug=:slug" },
     { "source": "/hardest-water-cities", "destination": "/api/hardest-water-cities" },
-    { "source": "/methodology", "destination": "/api/methodology" }
+    { "source": "/methodology", "destination": "/api/methodology" },
+    { "source": "/landlord-hard-water", "destination": "/api/landlord-hard-water" }
   ],
   "headers": [
     {
