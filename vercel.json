@@ -7,7 +7,8 @@
     { "source": "/hardest-water-cities", "destination": "/api/hardest-water-cities" },
     { "source": "/methodology", "destination": "/api/methodology" },
     { "source": "/landlord-hard-water", "destination": "/api/landlord-hard-water" },
-    { "source": "/the-wrong-number-problem", "destination": "/api/the-wrong-number-problem" }
+    { "source": "/the-wrong-number-problem", "destination": "/api/the-wrong-number-problem" },
+    { "source": "/privacy", "destination": "/api/privacy" }
   ],
   "headers": [
     {
