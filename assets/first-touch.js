@@ -25,11 +25,15 @@
     if (k.indexOf("utm_") === 0) utm[k] = v;
   });
 
-  localStorage.setItem(KEY, JSON.stringify({
+  var obj = {
     src: src,
     ref: ref,
     lp: location.pathname,
     ts: new Date().toISOString(),
     utm: utm
-  }));
+  };
+  var fbclid = params.get("fbclid");
+  if (fbclid) obj.fbclid = fbclid;
+
+  localStorage.setItem(KEY, JSON.stringify(obj));
 })();
