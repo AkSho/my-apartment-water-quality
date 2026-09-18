@@ -1,5 +1,8 @@
 {
   "trailingSlash": false,
+  "redirects": [
+    { "source": "/water-hardness/", "destination": "/water-hardness", "statusCode": 301 }
+  ],
   "rewrites": [
     { "source": "/report", "destination": "/api/report" },
     { "source": "/water-hardness", "destination": "/api/water-hardness" },
