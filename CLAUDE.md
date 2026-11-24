@@ -11,3 +11,5 @@ Non-negotiables, even if the skill is not loaded:
 6. Never write test data to a real customer's row or sheet line; use a test row and delete it.
 7. Reports use the fixed headings: What changed (file by file), Approved scope clarifications, Deviations, Known limitations, Environment, Deploy verification evidence.
 8. A default that invents a product, carrier, or value is worse than stopping and logging. When unsure, skip and flag.
+
+Before any brief from mailbox/briefs/, read docs/briefs/QUALITY-BAR.md and follow it unless the brief says otherwise.
